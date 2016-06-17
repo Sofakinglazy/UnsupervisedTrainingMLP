@@ -73,6 +73,18 @@ public class MNISTImageFile extends RandomAccessFile{
 		}
 	}
 	
+	public String toString(){
+		String s = "";
+		s = s + "The name of the file: " + filename + "\n"
+			  + "rows: " + rows + ", cols: " + cols + "\n"
+			  + "status: " + curr + "/" + count; 
+		return s;
+	}
+	
+	public String status(){
+		return "status: " + curr + "/" + count;
+	}
+	
 	public int curr(){return curr;}
 	public String getFilename(){return filename;}
 	public int getRows(){return rows;}
