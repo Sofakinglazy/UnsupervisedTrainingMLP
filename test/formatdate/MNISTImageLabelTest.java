@@ -25,11 +25,11 @@ public class MNISTImageLabelTest extends TestCase {
 			
 			assertEquals(60000, labels.getCount());
 			
-			labels.setCurr(1);
-			
-			int label = labels.label();
-			
-			System.out.println(label);
+			for (int i = 1; i < 5; i++){
+				labels.setCurr(i);
+				int label = labels.label();
+				System.out.println(label);
+			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
