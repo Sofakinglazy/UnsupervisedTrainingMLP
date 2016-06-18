@@ -27,16 +27,18 @@ public class MNISTImageFile extends RandomAccessFile{
 	
 	public int[][] data(){
 		int[][] data = new int[rows][cols];
-		for (int j = 0; j < cols; j++){
-			for (int i = 0; i < rows; i++){
+		for (int i = 0; i < rows; i++){
+			System.out.println();
+			for (int j = 0; j < cols; j++){
 				try {
 					data[i][j] = readUnsignedByte();
+					System.out.print(data[i][j] + " ");
 				} catch (IOException e) {
 					System.err.println(e);
 				}
 			}
 		}
-		setCurr(curr());
+		setCurr(curr);
 		return data;
 	}
 	
@@ -70,12 +72,14 @@ public class MNISTImageFile extends RandomAccessFile{
 			} catch (IOException e) {
 				System.err.println(e);
 			}
+		} else {
+			System.err.println(curr + " is not in the range 0 to " + count);
 		}
 	}
 	
 	public String toString(){
 		String s = "";
-		s = s + "The name of the file: " + filename + "\n"
+		s = s + "The path of the file: " + filename + "\n"
 			  + "rows: " + rows + ", cols: " + cols + "\n"
 			  + "status: " + curr + "/" + count; 
 		return s;
@@ -85,9 +89,12 @@ public class MNISTImageFile extends RandomAccessFile{
 		return "status: " + curr + "/" + count;
 	}
 	
-	public int curr(){return curr;}
+	public int getCurr(){return curr;}
 	public String getFilename(){return filename;}
 	public int getRows(){return rows;}
 	public int getCols(){return cols;}
 	
+	public long getPointer() throws IOException{
+		return getFilePointer();
+	}
 }
