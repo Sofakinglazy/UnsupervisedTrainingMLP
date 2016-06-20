@@ -13,18 +13,18 @@ public class ImageViewer extends JPanel{
 	public static final int HEIGHT = 28;
 	public static final int SCALE = 6;
 
-	
 	private BufferedImage image;
 	private double[][] data;
 	
 	public ImageViewer(){
 		super();
+		data = new double[WIDTH][HEIGHT];
 		attainMNISTImage();
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 	}
 	
 	private void attainMNISTImage() {
-		getMNISTImage();
+		normalise();
 		
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = (Graphics2D) image.getGraphics();
@@ -37,16 +37,14 @@ public class ImageViewer extends JPanel{
         }
 	}
 
-	private void getMNISTImage() {
+	private void normalise() {
 		try {
 			MNISTImageFile MNISTImage = new MNISTImageFile(Utils.IMAGE_PATH, "r");
-			MNISTImage.setCurr(0);
+			MNISTImage.setCurr(2);
 			int[][] dat = MNISTImage.data();
-			data = new double[WIDTH][HEIGHT];
 			for (int i = 0; i < WIDTH; i++){
 				for (int j = 0; j < HEIGHT; j++){
 	                data[j][i] = (double) dat[j][i] / 255;
-	                System.out.println(data[i][j]);
 				}
 			}
 			MNISTImage.close();
@@ -62,9 +60,8 @@ public class ImageViewer extends JPanel{
         g2d.setRenderingHint(
                 RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.scale(6, 6);
+        g2d.scale(SCALE, SCALE);
         g2d.drawImage(image, 0, 0, this);
 	}
-	
 	
 }

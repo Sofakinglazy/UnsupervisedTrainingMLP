@@ -28,11 +28,11 @@ public class MNISTImageFile extends RandomAccessFile{
 	public int[][] data(){
 		int[][] data = new int[rows][cols];
 		for (int i = 0; i < rows; i++){
-			System.out.println();
+//			System.out.println();
 			for (int j = 0; j < cols; j++){
 				try {
 					data[i][j] = readUnsignedByte();
-					System.out.print(data[i][j] + " ");
+//					System.out.print(data[i][j] + " ");
 				} catch (IOException e) {
 					System.err.println(e);
 				}
