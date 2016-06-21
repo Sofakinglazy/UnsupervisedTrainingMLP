@@ -9,9 +9,9 @@ public class Node {
 	public double biasDiff;
 	public double error;
 	
-	public Node(int numOfNodes){
-		weights = new double[numOfNodes];
-		weightsDiff = new double[numOfNodes];
+	public Node(int numOfInputs){
+		weights = new double[numOfInputs];
+		weightsDiff = new double[numOfInputs];
 		initWeightsAndBias();
 	}
 
@@ -35,13 +35,13 @@ public class Node {
 		for (int i = 0; i < weights.length; i++){
 			s = s + weights[i] + " ";
 		}
-		s += "\n WeightsDiff: ";
+		s += "\nWeightsDiff: ";
 		for (int i = 0; i < weights.length; i++){
 			s = s + weightsDiff[i] + " ";
 		}
-		s = s + "\n Output: " + output + 
-				"\n Bias: " + bias + 
-				"\n Error: " + error;
+		s = s + "\nOutput: " + output + 
+				"\nBias: " + bias + 
+				"\nError: " + error;
 		return s;
 	}
 }
