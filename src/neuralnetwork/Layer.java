@@ -3,8 +3,8 @@ package neuralnetwork;
 public class Layer {
 	
 	private double sum; 
-	private double[] inputs;
-	private Node[] nodes;
+	public double[] inputs;
+	public Node[] nodes;
 	
 	public Layer(int numOfInputs, int numOfNodes){
 		inputs = new double[numOfInputs];
@@ -51,10 +51,10 @@ public class Layer {
 	}
 	
 	//Test
-	public void setInputs(double[] inputs){
-		if (this.inputs.length != inputs.length) System.err.println("The nunmber of inputs doesnt match.");
-		for (int i = 0; i < inputs.length; i++){
-			this.inputs[i] = inputs[i];
-		}
-	}
+//	public void setInputs(double[] inputs){
+//		if (this.inputs.length != inputs.length) System.err.println("The nunmber of inputs doesnt match.");
+//		for (int i = 0; i < inputs.length; i++){
+//			this.inputs[i] = inputs[i];
+//		}
+//	}
 }

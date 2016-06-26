@@ -15,6 +15,7 @@ public class ImageViewer extends JPanel{
 
 	private BufferedImage image;
 	private double[][] data;
+	private int currImage = 2;
 	
 	public ImageViewer(){
 		super();
@@ -40,7 +41,7 @@ public class ImageViewer extends JPanel{
 	private void normalise() {
 		try {
 			MNISTImageFile MNISTImage = new MNISTImageFile(Utils.IMAGE_PATH, "r");
-			MNISTImage.setCurr(2);
+			MNISTImage.setCurr(currImage);
 			int[][] dat = MNISTImage.data();
 			for (int i = 0; i < WIDTH; i++){
 				for (int j = 0; j < HEIGHT; j++){

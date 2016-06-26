@@ -9,7 +9,7 @@ public class LayerTest extends TestCase {
 		
 		double[] inputs = {1, 2, 1};
 		
-		layer.setInputs(inputs);
+		layer.inputs = inputs;
 		
 		System.out.println(layer);
 		
