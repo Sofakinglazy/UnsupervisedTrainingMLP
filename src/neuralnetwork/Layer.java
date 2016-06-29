@@ -47,6 +47,10 @@ public class Layer {
 		for (int i = 0; i < outputs.length; i++){
 			s = s + outputs[i] + " ";
 		}
+//		s += "\nError: ";
+//		for (int i = 0; i < nodes.length; i++){
+//			s = s + nodes[i].error + " ";
+//		}
 		return s;
 	}
 	

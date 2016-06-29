@@ -3,16 +3,16 @@ package neuralnetwork;
 public class NeuralNetwork {
 
 	private double learningRate;// user-defined
-	public double[][] inputs;
+	private double[][] inputs;
 	private double[][] expectedOutput;
-	public double[][] actualOutput;
+	private double[][] actualOutput;
 	private double overalError;
 	private double minError;// user-defined
 	private int numOfLayers;// user-defined
-	private int currInputIndex;// user-defined
-	private int numOfInputSets;
+	private int currInputIndex;
+	private int numOfInputSets;// user-defined
 	private long maxNumOfIterations;// user-defined
-	private double momentum;
+	private double momentum;// user-defined
 
 	private Layer[] layers;
 
@@ -48,7 +48,7 @@ public class NeuralNetwork {
 		}
 		for (int i = 0; i < numOfInputSets; i++){
 			for (int j = 0; j < layers[numOfLayers - 1].nodes.length; j++){
-				actualOutput[i][j] = outputSamples[i][j];
+				expectedOutput[i][j] = outputSamples[i][j];
 			}
 		}
 	}
@@ -56,13 +56,13 @@ public class NeuralNetwork {
 	public void feedForward(){
 		// Input layer's output is equal to its input
 		for (int i = 0; i < layers[0].nodes.length; i++){
-			layers[1].nodes[i].output = layers[0].inputs[i];
+			layers[0].nodes[i].output = layers[0].inputs[i];
 		}
-		
+		layers[1].inputs = layers[0].inputs;
 		for (int i = 1; i < numOfLayers; i++){
 			layers[i].feedForward();
 			if (i != numOfLayers - 1){
-				layers[i + 1].inputs = layers[i].getOutputs();
+				layers[i+1].inputs = layers[i].getOutputs();
 			}
 		}
 	}
@@ -74,20 +74,21 @@ public class NeuralNetwork {
 
 	private void calculateSignalError() {
 		int outputLayerIndex = numOfLayers - 1;
-		double sum = 0;
+		double sum = 0d;
 		for (int i = 0; i < layers[outputLayerIndex].nodes.length; i++){
-			layers[outputLayerIndex].nodes[i].error = (actualOutput[currInputIndex][i] - layers[outputLayerIndex].nodes[i].output)
+			layers[outputLayerIndex].nodes[i].error = (expectedOutput[currInputIndex][i] - layers[outputLayerIndex].nodes[i].output)
 														* layers[outputLayerIndex].nodes[i].output 
-														* (1 - layers[outputLayerIndex].nodes[i].output);
+														* (1d - layers[outputLayerIndex].nodes[i].output);
+//			System.out.println(layers[outputLayerIndex].nodes[i].error);
 		}
 		
 		for (int i = numOfLayers - 2; i > 0; i--){
 			for (int j = 0; j < layers[i].nodes.length; j++){
-				sum = 0;
+				sum = 0d;
 				for (int k = 0; k < layers[i+1].nodes.length; k++){
 					sum = sum + layers[i+1].nodes[k].weights[j] * layers[i+1].nodes[k].error;
 				}
-				layers[i].nodes[j].error = layers[i].nodes[j].output * (1 - layers[i].nodes[j].output) * sum;
+				layers[i].nodes[j].error = layers[i].nodes[j].output * (1d - layers[i].nodes[j].output) * sum;
 			}
 		}
 	}
@@ -96,7 +97,7 @@ public class NeuralNetwork {
 		for (int i = numOfLayers-1; i > 0; i--){
 			for (int j = 0; j < layers[i].nodes.length; j++){
 				// update bias difference
-				layers[i].nodes[j].biasDiff = learningRate * layers[i].nodes[j].error + layers[i].nodes[j].biasDiff;
+				layers[i].nodes[j].biasDiff = learningRate * layers[i].nodes[j].error + momentum * layers[i].nodes[j].biasDiff;
 				// update bias 
 				layers[i].nodes[j].bias = layers[i].nodes[j].bias + layers[i].nodes[j].biasDiff;
 				// update weights 
@@ -111,19 +112,21 @@ public class NeuralNetwork {
 		}
 	}
 	
-	private void calculateOveralError(){
+	public void calculateOveralError(){
 		overalError = 0;
 		for (int i = 0; i < numOfInputSets; i++){
 			for (int j = 0; j < layers[numOfLayers-1].nodes.length; j++){
-				overalError = overalError + 0.5 * (Math.pow(expectedOutput[i][j] - actualOutput[i][j], 2));
+				overalError = overalError + 0.5d * (Math.pow(expectedOutput[i][j] - actualOutput[i][j], 2));
 			}
 		}
+		
+		System.out.println("Current Overal Error is: " + overalError);
 	}
 	
 	public void trainNetwork(){
 		int currIteration = 0;
 		do{
-			for (currInputIndex = 0; currInputIndex < numOfInputSets; currIteration++){
+			for (currInputIndex = 0; currInputIndex < numOfInputSets; currInputIndex++){
 				// assign inputs 
 				for (int i = 0; i < layers[0].nodes.length; i++){
 					layers[0].inputs[i] = inputs[currInputIndex][i];
@@ -134,9 +137,63 @@ public class NeuralNetwork {
 					actualOutput[currInputIndex][i] = layers[numOfLayers-1].nodes[i].output;
 				}
 				updateWeights();
-				currIteration++;
-				calculateOveralError();
 			}
+			test();
+			currIteration++;
+			calculateOveralError();
 		} while ((overalError > minError) && (currIteration < maxNumOfIterations));
+		
+	}
+
+	private void test() {
+		// test
+		String s = "";
+		for (int i = 0; i < actualOutput.length; i++){
+			for (int j = 0; j < actualOutput[i].length; j++){
+				s = s + actualOutput[i][j] + " ";
+			}
+			s = s + "\n";
+		}
+		System.out.println(s);
+	}
+	
+	public double[][] testNetwork(double[][] testSamples){
+		double[][] outputs = new double[testSamples.length][];
+		
+		for (int i = 0; i < testSamples.length; i++){
+			outputs[i] = new double[expectedOutput[0].length];
+			outputs[i] = feedForward(testSamples[i]);
+		}
+		
+		return outputs;
+	}
+	
+	private double[] feedForward(double[] inputs) {
+		// Input layer's output is equal to its input
+		for (int i = 0; i < layers[0].nodes.length; i++){
+			layers[0].nodes[i].output = inputs[i];
+		}
+		
+		for (int i = 1; i < numOfLayers; i++){
+			layers[i].feedForward();
+			if (i != numOfLayers - 1){
+				// the last output was zero!!!!
+				layers[i+1].inputs = layers[i].getOutputs();
+			}
+		}
+		
+		return layers[numOfLayers-1].getOutputs();
+	}
+
+	public String toString(){
+		String s = "";
+		s = s + "#NeuralNetwork#\n" +
+				"Learning rate: " + learningRate + "\n" +
+				"Max Literations: " + maxNumOfIterations + "\n" +
+				"Momentum: " + momentum + "\n" + 
+				"Min Error: " + minError + "\n" + 
+				"Layers:\n";
+		for (int i = 0; i < numOfLayers; i++) System.out.println(layers[i]); 
+		return s;
 	}
 }
