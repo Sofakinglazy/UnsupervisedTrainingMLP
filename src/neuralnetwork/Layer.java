@@ -1,6 +1,8 @@
 package neuralnetwork;
 
-public class Layer {
+import java.io.Serializable;
+
+public class Layer implements Serializable{
 	
 	private double sum; 
 	public double[] inputs;
@@ -47,18 +49,6 @@ public class Layer {
 		for (int i = 0; i < outputs.length; i++){
 			s = s + outputs[i] + " ";
 		}
-//		s += "\nError: ";
-//		for (int i = 0; i < nodes.length; i++){
-//			s = s + nodes[i].error + " ";
-//		}
 		return s;
 	}
-	
-	//Test
-//	public void setInputs(double[] inputs){
-//		if (this.inputs.length != inputs.length) System.err.println("The nunmber of inputs doesnt match.");
-//		for (int i = 0; i < inputs.length; i++){
-//			this.inputs[i] = inputs[i];
-//		}
-//	}
 }

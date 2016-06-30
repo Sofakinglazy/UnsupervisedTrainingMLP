@@ -1,20 +1,22 @@
 package neuralnetwork;
 
-public class NeuralNetwork {
+import java.io.Serializable;
 
-	private double learningRate;// user-defined
-	private double[][] inputs;
-	private double[][] expectedOutput;
-	private double[][] actualOutput;
-	private double overalError;
-	private double minError;// user-defined
-	private int numOfLayers;// user-defined
-	private int currInputIndex;
-	private int numOfInputSets;// user-defined
-	private long maxNumOfIterations;// user-defined
-	private double momentum;// user-defined
+public class NeuralNetwork implements Serializable{
 
-	private Layer[] layers;
+	public double learningRate;// user-defined
+	public double[][] inputs;
+	public double[][] expectedOutput;
+	public double[][] actualOutput;
+	public double overalError;
+	public double minError;// user-defined
+	public int numOfLayers;// user-defined
+	public int currInputIndex;
+	public int numOfInputSets;// user-defined
+	public long maxNumOfIterations;// user-defined
+	public double momentum;// user-defined
+
+	public Layer[] layers;
 
 	public NeuralNetwork(
 			int[] numOfNodes,
@@ -79,7 +81,6 @@ public class NeuralNetwork {
 			layers[outputLayerIndex].nodes[i].error = (expectedOutput[currInputIndex][i] - layers[outputLayerIndex].nodes[i].output)
 														* layers[outputLayerIndex].nodes[i].output 
 														* (1d - layers[outputLayerIndex].nodes[i].output);
-//			System.out.println(layers[outputLayerIndex].nodes[i].error);
 		}
 		
 		for (int i = numOfLayers - 2; i > 0; i--){

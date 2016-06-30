@@ -1,6 +1,8 @@
 package neuralnetwork;
 
-public class Node {
+import java.io.Serializable;
+
+public class Node implements Serializable{
 	
 	public double output;
 	public double[] weights;
