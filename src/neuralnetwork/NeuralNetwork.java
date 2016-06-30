@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class NeuralNetwork implements Serializable{
 
-	public double learningRate;// user-defined
+	private double learningRate;// user-defined
 	public double[][] inputs;
 	public double[][] expectedOutput;
 	public double[][] actualOutput;
-	public double overalError;
-	public double minError;// user-defined
-	public int numOfLayers;// user-defined
-	public int currInputIndex;
-	public int numOfInputSets;// user-defined
-	public long maxNumOfIterations;// user-defined
-	public double momentum;// user-defined
+	private double overalError;
+	private double minError;// user-defined
+	private int numOfLayers;// user-defined
+	private int currInputIndex;
+	private int numOfInputSets;// user-defined
+	private long maxNumOfIterations;// user-defined
+	private double momentum;// user-defined
 
 	public Layer[] layers;
 
@@ -175,6 +175,7 @@ public class NeuralNetwork implements Serializable{
 			layers[0].nodes[i].output = inputs[i];
 		}
 		
+		layers[1].inputs = inputs;
 		for (int i = 1; i < numOfLayers; i++){
 			layers[i].feedForward();
 			if (i != numOfLayers - 1){
