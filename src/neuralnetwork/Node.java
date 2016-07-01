@@ -31,6 +31,19 @@ public class Node implements Serializable{
 		return 2 * Math.random() - 1;
 	}
 	
+	// set weights as -1, 0, 1 
+	public void setIntegerWeithts(){
+		for (int i = 0; i < weights.length; i++){
+			weights[i] = Math.round(generateSmallRandomNumber()); // generate -1, 0, 1
+			weightsDiff[i] = 0;
+		}
+	}
+	
+	// set bias as a fixed number 
+	public void setFixedBias(double bias){
+		this.bias = bias;
+	}
+	
 	public String toString(){
 		String s = "#NODE#\n";
 		s += "Weights: ";

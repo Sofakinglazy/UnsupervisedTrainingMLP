@@ -17,7 +17,7 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetwork nn = new NeuralNetwork(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-		nn.trainNetwork();
+		nn = NeuralNetworkIO.loadNeuralNetwork();
 		
 		double[][] outputs = nn.testNetwork(inputSamples);
 		String s = "";
@@ -70,7 +70,6 @@ public class NeuralNetworkTest extends TestCase {
 		actualOutput[2][0] = 3.5641847511922614E-5d;
 		
 		double error = calculateOveralError(expectedOutput, actualOutput);
-//		System.out.println("error: " + error);
 	}
 
 	private double calculateOveralError(double[][] expectedOutput, double[][] actualOutput) {
@@ -97,12 +96,11 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetwork nn = new NeuralNetwork(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-//		nn.trainNetwork();
-//		
-//		NeuralNetworkIO.saveNeuralNetwork(nn);
-//		
-//		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork();
-//		
-//		System.out.println(nn1);
+		nn.trainNetwork();
+		
+		NeuralNetworkIO.saveNeuralNetwork(nn);
+		
+		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork();
+		
 	}
 }
