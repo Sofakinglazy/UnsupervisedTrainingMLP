@@ -10,10 +10,8 @@ public class NodeTest extends TestCase {
 	}
 	
 	public void testSetIntegerWeights(){
-		Node node = new Node(10);
-		double bias = 1d;
+		Node node = new Node(10, 1d);
 		node.setIntegerWeithts();
-		node.setFixedBias(bias);
 		System.out.println(node);
 	}
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Layer implements Serializable{
 	
-	private double sum; 
+	protected double sum; 
 	public double[] inputs;
 	public Node[] nodes;
 	

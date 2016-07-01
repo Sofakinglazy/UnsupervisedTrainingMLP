@@ -14,7 +14,7 @@ public class NeuralNetworkTest extends TestCase {
 		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0, 1}
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		
-		NeuralNetwork nn = new NeuralNetwork(numOfNodes, inputSamples, outputSamples, 
+		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
 		nn = NeuralNetworkIO.loadNeuralNetwork();
@@ -93,14 +93,14 @@ public class NeuralNetworkTest extends TestCase {
 		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0, 1}
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		
-		NeuralNetwork nn = new NeuralNetwork(numOfNodes, inputSamples, outputSamples, 
+		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
 		nn.trainNetwork();
 		
 		NeuralNetworkIO.saveNeuralNetwork(nn);
 		
-		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork();
+		NeuralNetworkBP nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
 	}
 }

@@ -10,7 +10,7 @@ public class NeuralNetworkIO {
 	public static ObjectOutputStream oos = null;
 	public static ObjectInputStream ois = null;
 	
-	public static void saveNeuralNetwork(NeuralNetwork nn){
+	public static void saveNeuralNetwork(NeuralNetworkBP nn){
 		try {
 			fos = new FileOutputStream(PATH);
 			oos = new ObjectOutputStream(fos);
@@ -29,12 +29,12 @@ public class NeuralNetworkIO {
 		}
 	}
 	
-	public static NeuralNetwork loadNeuralNetwork(){
-		NeuralNetwork nn = null;
+	public static NeuralNetworkBP loadNeuralNetwork(){
+		NeuralNetworkBP nn = null;
 		try {
 			fis = new FileInputStream(PATH);
 			ois = new ObjectInputStream(fis);
-			nn = (NeuralNetwork) ois.readObject();
+			nn = (NeuralNetworkBP) ois.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {

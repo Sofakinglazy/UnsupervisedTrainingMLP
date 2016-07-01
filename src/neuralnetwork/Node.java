@@ -16,6 +16,12 @@ public class Node implements Serializable{
 		weightsDiff = new double[numOfInputs];
 		initWeightsAndBias();
 	}
+	
+	public Node(int numOfInputs, double fixedBias){
+		weights = new double[numOfInputs];
+		weightsDiff = new double[numOfInputs];
+		bias = fixedBias;
+	}
 
 	private void initWeightsAndBias() {
 		bias = generateSmallRandomNumber();
@@ -37,11 +43,6 @@ public class Node implements Serializable{
 			weights[i] = Math.round(generateSmallRandomNumber()); // generate -1, 0, 1
 			weightsDiff[i] = 0;
 		}
-	}
-	
-	// set bias as a fixed number 
-	public void setFixedBias(double bias){
-		this.bias = bias;
 	}
 	
 	public String toString(){
