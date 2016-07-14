@@ -103,4 +103,5 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetworkBP nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
 	}
+	
 }
