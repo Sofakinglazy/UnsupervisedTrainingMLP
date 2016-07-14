@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import formatdata.MNISTImageFile;
+import formatdata.Utils;
 
 public class ImageViewer extends JPanel{
 
