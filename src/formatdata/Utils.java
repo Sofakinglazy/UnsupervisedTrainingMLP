@@ -60,5 +60,32 @@ public class Utils {
 		return getImagesWithLabel(label, "");
 	}
 	
-	public static Map<Integer, int[][]> getImages
+	// Format image data to match the inputs of neural network 
+	public static int[][] formatImagesForNeuralNetwork(int label, String mode){
+		Map<Integer, int[][]> map = getImagesWithLabel(label, mode);
+		Set<Integer> keys = map.keySet();
+		int[][] images = new int[keys.size()][];
+		int[] image = null;
+		for (Integer i : keys){
+			image = formatImagesToRowData(map.get(i));
+			images[i] = image;
+		}
+		return images;
+	}
+	public static int[][] formatImagesForNeuralNetwork(int label){
+		return formatImagesForNeuralNetwork(label, "");
+	}
+	
+	public static int[] formatImagesToRowData(int[][] image){
+		int rows = image.length;
+		int cols = image[0].length;
+		int size = rows * cols;
+		int[] rowImage = new int[size];
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				rowImage[i * cols + j] = image[i][j];
+			}
+		}
+		return rowImage;
+	}
 }
