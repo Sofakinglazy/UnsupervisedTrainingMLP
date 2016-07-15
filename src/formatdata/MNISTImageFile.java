@@ -93,6 +93,7 @@ public class MNISTImageFile extends RandomAccessFile{
 	public String getFilename(){return filename;}
 	public int getRows(){return rows;}
 	public int getCols(){return cols;}
+	public int getCount(){return count;}
 	
 	public long getPointer() throws IOException{
 		return getFilePointer();

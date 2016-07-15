@@ -104,4 +104,14 @@ public class NeuralNetworkTest extends TestCase {
 		
 	}
 	
+	public void testBPNetworkWithRealData(){
+		double learningRate = 0.5d;
+		long maxNumOfIterations = 10000;
+		double minError = 1E-4d;
+		double momentum = 0.1d;
+		int[] numOfNodes = {3, 7, 1};
+		
+		
+	}
+	
 }
