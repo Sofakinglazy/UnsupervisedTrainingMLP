@@ -18,7 +18,7 @@ public class LayerFL extends Layer implements Serializable{
 		}
 	}
 	
-	public void setIntegerWeithtsForFirstLayer(){
+	public void setIntegerWeithts(){
 		for (int i = 0; i < nodes.length; i++){
 			nodes[i].setIntegerWeithts();
 		}

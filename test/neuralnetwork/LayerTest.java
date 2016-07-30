@@ -23,7 +23,7 @@ public class LayerTest extends TestCase {
 		
 		System.out.println(firstLayer.nodes[0]);
 		
-		firstLayer.setIntegerWeithtsForFirstLayer();
+		firstLayer.setIntegerWeithts();
 		
 		System.out.println(firstLayer.nodes[0]);
 	}

@@ -50,6 +50,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 		for (int i = 1; i < numOfLayers.length; i++){
 			layers[i] = new LayerFL(numOfLayers[i-1], numOfLayers[i], fixedBias); 
 		} // hidden layer and output layer (bias are the same)
+		setIntegerWeightsOfInputToFirstHiddenLayer();
 		
 	}
 
@@ -73,7 +74,6 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			layers[0].nodes[i].output = layers[0].inputs[i];
 		}
 		layers[1].inputs = layers[0].inputs;
-		setIntegerWeightsOfInputToFirstHiddenLayer();
 		for (int i = 1; i < layers.length; i++){
 			layers[i].feedForward();
 			if (i != layers.length-1){
@@ -84,9 +84,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 
 	// set the weights from input to first hidden layer as -1, 0, 1
 	private void setIntegerWeightsOfInputToFirstHiddenLayer() {
-		for (int i = 0; i < layers[1].nodes.length; i++){
-			layers[1].nodes[i].setIntegerWeithts();
-		}
+		layers[1].setIntegerWeithts();
 	}
 
 	@Override
