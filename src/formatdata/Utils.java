@@ -61,75 +61,98 @@ public class Utils {
 	}
 
 	// Format image data to match the inputs of neural network
-	public static int[][] formatImagesWithSameLabelForNeuralNetwork(int label, String mode) {
+	public static double[][] formatImagesWithSameLabelForNeuralNetwork(int label, String mode) {
 		Map<Integer, int[][]> map = getImagesWithLabel(label, mode);
 		Set<Integer> keys = map.keySet();
-		int[][] images = new int[keys.size()][];
-		int[] image = null;
+		double[][] images = new double[keys.size()][];
 		for (Integer i : keys) {
-			image = formatImagesToRowData(map.get(i));
-			images[i] = image;
+			images[i] = formatImagesToRowData(map.get(i));
 		}
 		return images;
 	}
 
-	public static int[][] formatImagesWithSameLabelForNeuralNetwork(int label) {
+	public static double[][] formatImagesWithSameLabelForNeuralNetwork(int label) {
 		return formatImagesWithSameLabelForNeuralNetwork(label, "");
 	}
 
-	public static int[][] formatImagesForNeuralNetwork(int inputOrOutput, String mode) {
+	public static double[][] formatImagesForNeuralNetwork(String mode) {
 		String imagePath = IMAGE_PATH;
-		String labelPath = LABEL_PATH;
 
 		if (mode.equals("test")) {
 			imagePath = TEST_IMAGE_PATH;
-			labelPath = TEST_LABEL_PATH;
 		}
 
-		int[][] data = null;
+		double[][] data = null;
 		try {
-			switch (inputOrOutput) {
-			case 0:
-				 MNISTImageFile MNISTImage = new MNISTImageFile(imagePath, "r");
-				int count = MNISTImage.getCount();
-				data = new int[count][];
-				for (int i = 1; i < count; i++) {
-					MNISTImage.setCurr(i);
-					int[] rowImage = formatImagesToRowData(MNISTImage.data());
-					data[i-1] = rowImage;
-				}
-				break;
-			default:
-				MNISTLabelFile MNISTLabel = new MNISTLabelFile(labelPath, "r");
-				count = MNISTLabel.getCount();
-				data = new int[count][];
-				for (int i = 1; i < count; i++) {
-					MNISTLabel.setCurr(i);
-					data[i-1][0] = MNISTLabel.label();
-				}
-				break;
+			MNISTImageFile MNISTImage = new MNISTImageFile(imagePath, "r");
+			int count = MNISTImage.getCount();
+			data = new double[count][];
+			for (int i = 1; i <= count; i++) {
+				MNISTImage.setCurr(i);
+				double[] rowImage = formatImagesToRowData(MNISTImage.data());
+				data[i - 1] = rowImage;
 			}
+			MNISTImage.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		return data;
 	}
-	
-	public static int[][] formatImagesForNeuralNetwork(int inputOrOutput){
-		return formatImagesForNeuralNetwork(inputOrOutput, "");
+
+	public static double[][] formatImagesForNeuralNetwork() {
+		return formatImagesForNeuralNetwork("");
 	}
 
-	private static int[] formatImagesToRowData(int[][] image) {
+	public static double[][] formatLabelsForNeuralNetwork(String mode) {
+		String labelPath = LABEL_PATH;
+
+		if (mode.equals("test")) {
+			labelPath = TEST_LABEL_PATH;
+		}
+
+		double[][] label = null;
+		try {
+			MNISTLabelFile MNISTLabel = new MNISTLabelFile(labelPath, "r");
+			int count = MNISTLabel.getCount();
+			label = new double[count][];
+			for (int i = 1; i <= count; i++) {
+				MNISTLabel.setCurr(i);
+				label[i - 1] = new double[10];
+				label[i - 1] = formatNeuralNetworkOutputWithLabel(MNISTLabel.label());
+			}
+			MNISTLabel.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return label;
+	}
+
+	public static double[][] formatLabelsForNeuralNetwork() {
+		return formatLabelsForNeuralNetwork("");
+	}
+
+	private static double[] formatImagesToRowData(int[][] image) {
 		int rows = image.length;
 		int cols = image[0].length;
 		int size = rows * cols;
-		int[] rowImage = new int[size];
+		double[] rowImage = new double[size];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				rowImage[i * cols + j] = image[i][j];
+				rowImage[i * cols + j] = (double) image[i][j];
 			}
 		}
 		return rowImage;
+	}
+	
+	private static double[] formatNeuralNetworkOutputWithLabel(int label){
+		double[] output = new double[10];
+		for (int i = 0; i < 10; i++){
+			if (i == label){
+				output[i] = 1d;
+			}
+		}
+		return output;
 	}
 }

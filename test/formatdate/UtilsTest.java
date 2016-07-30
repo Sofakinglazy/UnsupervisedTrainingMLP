@@ -18,7 +18,7 @@ public class UtilsTest extends TestCase {
 		Map<Integer, int[][]> imagesWithSameLabels = Utils.getImagesWithLabel(label, "test");
 		Set<Integer> keys = imagesWithSameLabels.keySet();
 
-		int[][] images = Utils.formatImagesWithSameLabelForNeuralNetwork(label, "test");
+		double[][] images = Utils.formatImagesWithSameLabelForNeuralNetwork(label, "test");
 
 		// test the samples number
 		assertEquals(images.length, keys.size());
@@ -57,7 +57,7 @@ public class UtilsTest extends TestCase {
 	}
 	
 	public void testFormatImagesForNeuralNetwork(){
-		int[][] input = Utils.formatImagesForNeuralNetwork(0);
+		double[][] input = Utils.formatImagesForNeuralNetwork();
 		System.out.println(input.length);
 		System.out.println(input[0].length);
 	}

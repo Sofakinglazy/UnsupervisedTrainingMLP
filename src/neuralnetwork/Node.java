@@ -14,23 +14,27 @@ public class Node implements Serializable{
 	public Node(int numOfInputs){
 		weights = new double[numOfInputs];
 		weightsDiff = new double[numOfInputs];
-		initWeightsAndBias();
+		initRandomWeights();
+		initRamdonBias();
 	}
 	
 	public Node(int numOfInputs, double fixedBias){
 		weights = new double[numOfInputs];
 		weightsDiff = new double[numOfInputs];
+		initRandomWeights();
 		bias = fixedBias;
 	}
-
-	private void initWeightsAndBias() {
-		bias = generateSmallRandomNumber();
-		biasDiff = 0;
-		
+	
+	private void initRandomWeights(){
 		for (int i = 0; i < weights.length; i++){
 			weights[i] = generateSmallRandomNumber();
 			weightsDiff[i] = 0;
 		}
+	}
+	
+	private void initRamdonBias(){
+		bias = generateSmallRandomNumber();
+		biasDiff = 0;
 	}
 
 	private double generateSmallRandomNumber() {

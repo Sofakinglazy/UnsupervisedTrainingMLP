@@ -17,4 +17,14 @@ public class LayerTest extends TestCase {
 		
 		System.out.println(layer);
 	}
+	
+	public void testConstructorOfLayerFL(){
+		LayerFL firstLayer = new LayerFL(5, 2, 1d);
+		
+		System.out.println(firstLayer.nodes[0]);
+		
+		firstLayer.setIntegerWeithtsForFirstLayer();
+		
+		System.out.println(firstLayer.nodes[0]);
+	}
 }
