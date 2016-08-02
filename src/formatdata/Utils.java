@@ -1,14 +1,16 @@
 package formatdata;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Utils {
 
-	public static final String IMAGE_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/train-images-idx3-ubyte";
-	public static final String LABEL_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/train-labels-idx1-ubyte";
-	public static final String TEST_IMAGE_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/t10k-images-idx3-ubyte";
-	public static final String TEST_LABEL_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/t10k-labels-idx1-ubyte";
+	public static final String CURRENT_PATH = Paths.get("").toAbsolutePath().toString();
+	public static final String IMAGE_PATH = CURRENT_PATH + "/Data/train-images-idx3-ubyte";
+	public static final String LABEL_PATH = CURRENT_PATH + "/Data/train-labels-idx1-ubyte";
+	public static final String TEST_IMAGE_PATH = CURRENT_PATH + "/Data/t10k-images-idx3-ubyte";
+	public static final String TEST_LABEL_PATH = CURRENT_PATH + "/Data/t10k-labels-idx1-ubyte";
 
 	public static Map<Integer, int[][]> getImagesWithLabel(int label, String mode) {
 		if (label > 9 && label < 0) {
