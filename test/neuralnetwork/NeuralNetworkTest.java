@@ -1,5 +1,6 @@
 package neuralnetwork;
 
+import formatdata.Utils;
 import junit.framework.TestCase;
 
 public class NeuralNetworkTest extends TestCase {
@@ -27,7 +28,7 @@ public class NeuralNetworkTest extends TestCase {
 			}
 			s = s + "\n";
 		}
-		System.out.println(s);
+//		System.out.println(s);
 	}
 
 	private double[][] assignOutputSamples() {
@@ -96,33 +97,37 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-		nn.trainNetwork();
+//		nn.trainNetwork();
 		
-		NeuralNetworkIO.saveNeuralNetwork(nn);
+//		NeuralNetworkIO.saveNeuralNetwork(nn);
 		
 //		NeuralNetworkBP nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
 	}
 	
-//	public void testBPNetworkWithRealData(){
-//		double learningRate = 0.5d;
-//		long maxNumOfIterations = 10000;
-//		double minError = 1E-4d;
-//		double momentum = 0.1d;
-//		int[] numOfNodes = {784, 100, 10};
-//		
-//		// Real data
-//		double[][] inputSamples =  Utils.formatImagesForNeuralNetwork("test"); // 0 -> inputs 
-//		double[][] outputSamples = Utils.formatLabelsForNeuralNetwork("test"); // 1 -> outputs 
-//		
-//		inputSamples.clone();
-//		
-//		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
-//					learningRate, momentum, minError, maxNumOfIterations);
-//		
-//		nn.trainNetwork();
-//		
-//		NeuralNetworkIO.saveNeuralNetwork(nn);
-//	}
+	public void testBPNetworkWithRealData(){
+		double learningRate = 0.5d;
+		long maxNumOfIterations = 10000;
+		double minError = 1E-4d;
+		double momentum = 0.1d;
+		int[] numOfNodes = {784, 100, 10};
+		
+		System.out.println("Start to extract data.");
+		
+		// Real data
+		double[][] inputSamples =  Utils.formatImagesForNeuralNetwork("test"); // 0 -> inputs 
+		double[][] outputSamples = Utils.formatLabelsForNeuralNetwork("test"); // 1 -> outputs 
+		
+		System.out.println("Finish extracting data.");
+		
+		inputSamples.clone();
+		
+		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
+					learningRate, momentum, minError, maxNumOfIterations);
+		
+		nn.trainNetwork();
+		
+		NeuralNetworkIO.saveNeuralNetwork(nn);
+	}
 	
 }

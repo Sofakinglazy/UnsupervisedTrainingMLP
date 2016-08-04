@@ -56,7 +56,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 			}
 		}
 		
-		LoggerUtils.createLogger();
+//		LoggerUtils.createLogger();
 	}
 	
 	public void feedForward(){

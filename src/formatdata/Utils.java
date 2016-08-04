@@ -93,6 +93,7 @@ public class Utils {
 				MNISTImage.setCurr(i);
 				double[] rowImage = formatImagesToRowData(MNISTImage.data());
 				data[i - 1] = rowImage;
+				System.out.println("Finish extracting No." + i + " image data.");
 			}
 			MNISTImage.close();
 		} catch (IOException e) {
@@ -122,6 +123,7 @@ public class Utils {
 				MNISTLabel.setCurr(i);
 				label[i - 1] = new double[10];
 				label[i - 1] = formatNeuralNetworkOutputWithLabel(MNISTLabel.label());
+				System.out.println("Finish extracting No." + i + " image label.");
 			}
 			MNISTLabel.close();
 		} catch (IOException e) {

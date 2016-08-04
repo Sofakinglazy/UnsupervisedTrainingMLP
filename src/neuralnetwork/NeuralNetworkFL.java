@@ -10,13 +10,14 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 	private double[][] inputs;
 	private double[][] expectedOutput;
 	private double[][] actualOutput; 
+	private int numOfLayers;
 	private int numOfInputSet;
 	private int currSampleIndex;
 	private long maxNumOfIterations;
 	
 	private LayerFL[] layers;
 
-	public NeuralNetworkFL(int[] numOfLayers, 
+	public NeuralNetworkFL(int[] numOfNodes, 
 						double[][] inputSamples,
 						double[][] outputSameples, 
 						long maxNumOfIterations, 
@@ -24,14 +25,16 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 						double decreaseFactor,
 						double fixedBias){
 		this.numOfInputSet = inputSamples.length;
+		this.numOfLayers = numOfNodes.length;
 		this.maxNumOfIterations = maxNumOfIterations;
 		this.increaseFactor = increaseFactor;
 		this.decreaseFactor = decreaseFactor;
 		this.fixedBias = fixedBias;
 		
-		inputs = new double[numOfInputSet][numOfLayers[0]];
-		expectedOutput = new double[numOfInputSet][numOfLayers[numOfLayers.length-1]];
-		actualOutput = new double[numOfInputSet][numOfLayers[numOfLayers.length-1]];
+		
+		inputs = new double[numOfInputSet][numOfNodes[0]];
+		expectedOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length-1]];
+		actualOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length-1]];
 		
 		for (int i = 0; i < inputSamples.length; i++){
 			for (int j = 0; j < inputSamples[i].length; j++){
@@ -45,13 +48,12 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			}
 		}
 		
-		layers = new LayerFL[numOfLayers.length];
-		layers[0] = new LayerFL(numOfLayers[0], numOfLayers[0]);// input layer
-		for (int i = 1; i < numOfLayers.length; i++){
-			layers[i] = new LayerFL(numOfLayers[i-1], numOfLayers[i], fixedBias); 
+		layers = new LayerFL[numOfNodes.length];
+		layers[0] = new LayerFL(numOfNodes[0], numOfNodes[0]);// input layer
+		for (int i = 1; i < numOfNodes.length; i++){
+			layers[i] = new LayerFL(numOfNodes[i-1], numOfNodes[i], fixedBias); 
 		} // hidden layer and output layer (bias are the same)
 		setIntegerWeightsOfInputToFirstHiddenLayer();
-		
 	}
 
 	@Override
@@ -59,14 +61,23 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 		int currIteration = 0;
 		do {
 			for (currSampleIndex = 0; currSampleIndex < numOfInputSet; currSampleIndex++){
+				// assign inputs
 				for (int i = 0; i < inputs[currSampleIndex].length; i++){
 					layers[0].inputs[i] = inputs[currSampleIndex][i];
 				}
 				feedForward();
-				
+				// assign outputs
+				for (int i = 0; i < layers[numOfLayers-1].nodes.length; i++){
+					actualOutput[currSampleIndex][i] = layers[numOfLayers-1].nodes[i].output;
+				}
+				updateWeights();
 			}
 			currIteration++;
 		} while (currIteration > maxNumOfIterations);
+	}
+
+	private void updateWeights() {
+		
 	}
 
 	private void feedForward() {

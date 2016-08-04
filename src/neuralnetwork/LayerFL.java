@@ -24,6 +24,10 @@ public class LayerFL extends Layer implements Serializable{
 		}
 	}
 	
+	public double getFixedBias(){
+		return fixedBias;
+	}
+	
 	public void feedForward(){
 		for (int i = 0; i < nodes.length; i++){
 			sum = nodes[i].bias;
