@@ -1,6 +1,5 @@
 package neuralnetwork;
 
-import formatdata.Utils;
 import junit.framework.TestCase;
 
 public class NeuralNetworkTest extends TestCase {
@@ -10,7 +9,7 @@ public class NeuralNetworkTest extends TestCase {
 		long maxNumOfIterations = 10000;
 		double minError = 1E-4d;
 		double momentum = 0.1d;
-		int[] numOfNodes = {3, 3, 1};
+		int[] numOfNodes = {3, 7, 1};
 		
 		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0, 1}
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
@@ -18,7 +17,7 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-		nn = NeuralNetworkIO.loadNeuralNetwork();
+//		nn = NeuralNetworkIO.loadNeuralNetwork();
 		
 		double[][] outputs = nn.testNetwork(inputSamples);
 		String s = "";
@@ -99,31 +98,31 @@ public class NeuralNetworkTest extends TestCase {
 		
 		nn.trainNetwork();
 		
-//		NeuralNetworkIO.saveNeuralNetwork(nn);
+		NeuralNetworkIO.saveNeuralNetwork(nn);
 		
 //		NeuralNetworkBP nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
 	}
 	
-	public void testBPNetworkWithRealData(){
-		double learningRate = 0.5d;
-		long maxNumOfIterations = 10000;
-		double minError = 1E-4d;
-		double momentum = 0.1d;
-		int[] numOfNodes = {784, 7, 10};
-		
-		// Real data
-		double[][] inputSamples =  Utils.formatImagesForNeuralNetwork("test"); // 0 -> inputs 
-		double[][] outputSamples = Utils.formatLabelsForNeuralNetwork("test"); // 1 -> outputs 
-		
-		inputSamples.clone();
-		
-		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
-					learningRate, momentum, minError, maxNumOfIterations);
-		
-		nn.trainNetwork();
-		
-		NeuralNetworkIO.saveNeuralNetwork(nn);
-	}
+//	public void testBPNetworkWithRealData(){
+//		double learningRate = 0.5d;
+//		long maxNumOfIterations = 10000;
+//		double minError = 1E-4d;
+//		double momentum = 0.1d;
+//		int[] numOfNodes = {784, 100, 10};
+//		
+//		// Real data
+//		double[][] inputSamples =  Utils.formatImagesForNeuralNetwork("test"); // 0 -> inputs 
+//		double[][] outputSamples = Utils.formatLabelsForNeuralNetwork("test"); // 1 -> outputs 
+//		
+//		inputSamples.clone();
+//		
+//		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
+//					learningRate, momentum, minError, maxNumOfIterations);
+//		
+//		nn.trainNetwork();
+//		
+//		NeuralNetworkIO.saveNeuralNetwork(nn);
+//	}
 	
 }

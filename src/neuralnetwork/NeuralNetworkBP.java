@@ -17,7 +17,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 	private double momentum;// user-defined
 
 	public Layer[] layers;
-
+	
 	public NeuralNetworkBP(
 			int[] numOfNodes,
 			double[][] inputSamples,
@@ -25,7 +25,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 			double learningRate, 
 			double momentum,
 			double minError, 
-			long maxNumOfIterations) {
+			long maxNumOfIterations){
 		numOfLayers = numOfNodes.length;
 		numOfInputSets = inputSamples.length;
 		this.learningRate = learningRate;
@@ -53,6 +53,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 				expectedOutput[i][j] = outputSamples[i][j];
 			}
 		}
+	
 	}
 	
 	public void feedForward(){
