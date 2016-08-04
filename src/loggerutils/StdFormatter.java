@@ -10,9 +10,9 @@ public class StdFormatter extends SimpleFormatter{
 		}
 	}
 	
-	public final static Level STDERR = new StdOutErrLevel("STDERR", Level.SEVERE.intValue() + 53); 
-	public final static Level STDOUT = new StdOutErrLevel("STDOUT", Level.WARNING.intValue() + 53); 
-	private final String lineSeperator = System.getProperty("line.seperator");
+	public final static Level STDERR = new StdOutErrLevel("StdErr", Level.SEVERE.intValue() + 53); 
+	public final static Level STDOUT = new StdOutErrLevel("StdOut", Level.WARNING.intValue() + 53); 
+	private final String lineSeperator = System.getProperty("line.separator");
 	
 	@Override
 	public synchronized String format(LogRecord record) {

@@ -2,6 +2,8 @@ package neuralnetwork;
 
 import java.io.Serializable;
 
+import loggerutils.LoggerUtils;
+
 public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 
 	private double learningRate;// user-defined
@@ -53,7 +55,8 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 				expectedOutput[i][j] = outputSamples[i][j];
 			}
 		}
-	
+		
+		LoggerUtils.createLogger();
 	}
 	
 	public void feedForward(){

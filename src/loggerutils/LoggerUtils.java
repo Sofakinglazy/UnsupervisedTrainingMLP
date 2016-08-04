@@ -26,6 +26,7 @@ public class LoggerUtils {
 		for (int i = 0; i < handlers.length; i++) {
 			final Handler handler = handlers[i];
 			if (handler instanceof ConsoleHandler) {
+				// Remove the original console handler  
 				parentLogger.removeHandler(handler);
 			}
 		}
@@ -34,11 +35,12 @@ public class LoggerUtils {
 			final File logDirectory = new File(logDirectoryPath);
 			logDirectory.mkdirs();
 			if (logDirectory.isDirectory()) {
-				final String pathPattern = logDirectoryPath + ".log";
+				final String pathPattern = getPathPattern(logDirectoryPath);
 				fileHandler = new FileHandler(pathPattern);
 				fileHandler.setFormatter(new StdFormatter());
 				parentLogger.addHandler(fileHandler);
 			}
+			// create and add the new console handler
 			final ConsoleHandler consoleHandler = new ConsoleHandler();
 			consoleHandler.setFormatter(new StdFormatter());
 			if (System.getProperty("java.util.logging.config.file", null) == null) {
@@ -83,9 +85,14 @@ public class LoggerUtils {
 	}
 
 	public static String getLogDirectoryPath() {
-		final String currentTime = new SimpleDateFormat("yyyyMMddhhmm").format(new Date());
-		final String logDirectory = Utils.CURRENT_PATH + currentTime + ".log";
+		final String logDirectory = Utils.CURRENT_PATH + File.separatorChar + "logs";
 		return logDirectory;
+	}
+	
+	public static String getPathPattern(String logDirectoryPath){
+		final String currentTime = new SimpleDateFormat("yyyyMMddhhmm").format(new Date());
+		final String pathPattern = logDirectoryPath + File.separatorChar + currentTime + ".log";
+		return pathPattern;
 	}
 
 }
