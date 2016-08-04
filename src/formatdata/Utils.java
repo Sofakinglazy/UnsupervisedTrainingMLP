@@ -11,6 +11,8 @@ public class Utils {
 	public static final String LABEL_PATH = CURRENT_PATH + "/Data/train-labels-idx1-ubyte";
 	public static final String TEST_IMAGE_PATH = CURRENT_PATH + "/Data/t10k-images-idx3-ubyte";
 	public static final String TEST_LABEL_PATH = CURRENT_PATH + "/Data/t10k-labels-idx1-ubyte";
+	
+	public static final double FULL_VALUE_PIXEL = 255d;
 
 	public static Map<Integer, int[][]> getImagesWithLabel(int label, String mode) {
 		if (label > 9 && label < 0) {
@@ -144,7 +146,7 @@ public class Utils {
 		double[] rowImage = new double[size];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				rowImage[i * cols + j] = (double) image[i][j];
+				rowImage[i * cols + j] = normalise((double) image[i][j]);
 			}
 		}
 		return rowImage;
@@ -158,5 +160,9 @@ public class Utils {
 			}
 		}
 		return output;
+	}
+	
+	private static double normalise(double original){
+		return original/FULL_VALUE_PIXEL;
 	}
 }

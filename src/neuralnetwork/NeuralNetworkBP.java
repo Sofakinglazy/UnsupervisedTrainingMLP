@@ -143,7 +143,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 				}
 				updateWeights();
 			}
-			test();
+//			test(); 
 			currIteration++;
 			calculateOveralError();
 		} while ((overalError > minError) && (currIteration < maxNumOfIterations));

@@ -66,10 +66,6 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 					layers[0].inputs[i] = inputs[currSampleIndex][i];
 				}
 				feedForward();
-				// assign outputs
-				for (int i = 0; i < layers[numOfLayers-1].nodes.length; i++){
-					actualOutput[currSampleIndex][i] = layers[numOfLayers-1].nodes[i].output;
-				}
 				updateWeights();
 			}
 			currIteration++;
