@@ -35,6 +35,7 @@ public class LayerFL extends Layer implements Serializable{
 				sum = sum + inputs[j] * nodes[i].weights[j];
 			}
 			nodes[i].output = sum > 0 ? 1 : 0;
+			nodes[i].active = sum > 0 ? true : false;
 		}
 	}
 }

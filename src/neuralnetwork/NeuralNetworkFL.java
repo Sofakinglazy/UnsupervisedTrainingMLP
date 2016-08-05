@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 	
 	private double increaseFactor;
-	private double decreaseFactor;
-	private double fixedBias;
+	private double decayFactor;
+	private double[] fixedBias;
 	private double[][] inputs;
 	private double[][] expectedOutput;
 	private double[][] actualOutput; 
@@ -19,18 +19,30 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 
 	public NeuralNetworkFL(int[] numOfNodes, 
 						double[][] inputSamples,
-						double[][] outputSameples, 
+						double[][] outputSamples, 
 						long maxNumOfIterations, 
 						double increaseFactor, 
-						double decreaseFactor,
-						double fixedBias){
+						double decayFactor,
+						double[] fixedBias){
+		if (numOfNodes.length != 4){
+			System.err.println("This network only has 4 layers.");
+			System.exit(0);
+		}
+		if (numOfNodes[1] != numOfNodes[2]){
+			System.err.println("The nodes number in hidden layer one must be equal to hidden layer one.");
+			System.exit(0);
+		}
+		if (increaseFactor < decayFactor){
+			System.err.println("Increase factor must be greater than decay factor for force learning.");
+			System.exit(0);
+		}
+		
 		this.numOfInputSet = inputSamples.length;
 		this.numOfLayers = numOfNodes.length;
 		this.maxNumOfIterations = maxNumOfIterations;
 		this.increaseFactor = increaseFactor;
-		this.decreaseFactor = decreaseFactor;
+		this.decayFactor = decayFactor;
 		this.fixedBias = fixedBias;
-		
 		
 		inputs = new double[numOfInputSet][numOfNodes[0]];
 		expectedOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length-1]];
@@ -42,18 +54,19 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			}
 		}
 		
-		for (int i = 0; i < outputSameples.length; i++){
-			for (int j = 0; j < outputSameples[i].length; j++){
-				expectedOutput[i][j] = outputSameples[i][j];
+		for (int i = 0; i < outputSamples.length; i++){
+			for (int j = 0; j < outputSamples[i].length; j++){
+				expectedOutput[i][j] = outputSamples[i][j];
 			}
 		}
 		
 		layers = new LayerFL[numOfNodes.length];
 		layers[0] = new LayerFL(numOfNodes[0], numOfNodes[0]);// input layer
 		for (int i = 1; i < numOfNodes.length; i++){
-			layers[i] = new LayerFL(numOfNodes[i-1], numOfNodes[i], fixedBias); 
+			layers[i] = new LayerFL(numOfNodes[i-1], numOfNodes[i], fixedBias[i-1]); 
 		} // hidden layer and output layer (bias are the same)
 		setIntegerWeightsOfInputToFirstHiddenLayer();
+		
 	}
 
 	@Override
@@ -73,7 +86,17 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 	}
 
 	private void updateWeights() {
-		
+		// Shouldn't update the input layer and first hidden layer
+		for (int i = 2; i < numOfLayers; i++){
+			// Update each node
+			for (int j = 0; j < layers[i].nodes.length; j++){
+				// Update each weight 
+				for(int k = 0; k < layers[i].nodes[j].weights.length; k++){
+					layers[i].nodes[j].weightsDiff[k] = (layers[i-1].nodes[k].output * increaseFactor - decayFactor) * layers[i].nodes[j].weights[k];
+					layers[i].nodes[j].weights[k] = layers[i].nodes[j].weights[k] + layers[i].nodes[j].weightsDiff[k];
+				}
+			}
+		}
 	}
 
 	private void feedForward() {

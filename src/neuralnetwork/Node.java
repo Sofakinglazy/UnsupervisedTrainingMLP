@@ -11,6 +11,8 @@ public class Node implements Serializable{
 	public double biasDiff;
 	public double error;
 	
+	public boolean active;
+	
 	public Node(int numOfInputs){
 		weights = new double[numOfInputs];
 		weightsDiff = new double[numOfInputs];
