@@ -71,6 +71,7 @@ public class Utils {
 		double[][] images = new double[keys.size()][];
 		for (Integer i : keys) {
 			images[i] = formatImagesToRowData(map.get(i));
+			System.out.println("Finish extracting No." + i + " image data.");
 		}
 		return images;
 	}

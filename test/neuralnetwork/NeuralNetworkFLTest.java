@@ -1,5 +1,6 @@
 package neuralnetwork;
 
+import formatdata.Utils;
 import junit.framework.TestCase;
 
 public class NeuralNetworkFLTest extends TestCase {
@@ -68,5 +69,13 @@ public class NeuralNetworkFLTest extends TestCase {
 		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
 		nn.trainNetwork();
+	}
+	
+	public void testTrainNetworkWithRealData() {
+		double[][] imageWithLabelOne = Utils.formatImagesWithSameLabelForNeuralNetwork(1);
+		double[][] imageWithLabelTwo = Utils.formatImagesWithSameLabelForNeuralNetwork(2);
+		
+		System.out.printf("label_one_imgae:[%d,%d]\n", imageWithLabelOne.length, imageWithLabelOne[0].length);
+		System.out.printf("label_two_imgae:[%d,%d]\n", imageWithLabelTwo.length, imageWithLabelTwo[0].length);
 	}
 }

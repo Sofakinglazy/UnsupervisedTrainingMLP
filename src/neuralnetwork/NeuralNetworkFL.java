@@ -69,8 +69,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 		} 
 		setIntegerWeightsOfInputToFirstHiddenLayer();
 		
-		LoggerUtils.createLogger();
-		
+//		LoggerUtils.createLogger();
 	}
 
 	@Override
