@@ -2,6 +2,8 @@ package neuralnetwork;
 
 import java.io.Serializable;
 
+import loggerutils.LoggerUtils;
+
 public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 	
 	private double increaseFactor;
@@ -64,8 +66,10 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 		layers[0] = new LayerFL(numOfNodes[0], numOfNodes[0]);// input layer
 		for (int i = 1; i < numOfNodes.length; i++){
 			layers[i] = new LayerFL(numOfNodes[i-1], numOfNodes[i], fixedBias[i-1]); 
-		} // hidden layer and output layer (bias are the same)
+		} 
 		setIntegerWeightsOfInputToFirstHiddenLayer();
+		
+		LoggerUtils.createLogger();
 		
 	}
 
@@ -84,7 +88,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			currIteration++;
 		} while (currIteration > maxNumOfIterations);
 	}
-
+	
 	private void updateWeights() {
 		// Shouldn't update the input layer and first hidden layer
 		for (int i = 2; i < numOfLayers; i++){
@@ -92,7 +96,9 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			for (int j = 0; j < layers[i].nodes.length; j++){
 				// Update each weight 
 				for(int k = 0; k < layers[i].nodes[j].weights.length; k++){
-					layers[i].nodes[j].weightsDiff[k] = (layers[i-1].nodes[k].output * increaseFactor - decayFactor) * layers[i].nodes[j].weights[k];
+					// test 
+					System.out.println("[" + i + "," + j + "," + k + "]: " + layers[i].nodes[j].weights[k]);
+					layers[i].nodes[j].weightsDiff[k] = layers[i-1].nodes[k].output * increaseFactor - decayFactor * layers[i].nodes[j].weights[k];
 					layers[i].nodes[j].weights[k] = layers[i].nodes[j].weights[k] + layers[i].nodes[j].weightsDiff[k];
 				}
 			}

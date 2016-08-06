@@ -7,12 +7,9 @@ public class NeuralNetworkFLTest extends TestCase {
 	private boolean active = false;
 	private double increaseFactor = 0.5d;
 	private double decayFactor = 0.2d;
-	private double learningRate = 0.5d;
 	private long maxNumOfIterations = 10000;
-	private double minError = 1E-4d;
-	private double momentum = 0.1d;
-	private int[] numOfNodes = { 3, 4, 4, 10 };
-	private double[] fixedBias = { 1d, 1.2d, 1d };
+	private int[] numOfNodes = { 3, 4, 4, 2 };
+	private double[] fixedBias = { 0.5d, 0.8d, 0.5d };
 
 	double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0,
 													// 1}
@@ -50,11 +47,11 @@ public class NeuralNetworkFLTest extends TestCase {
 	public void testForceLearningRules() {
 		double originalWeight = 0.123456123d;
 		double newWeight = updateWeight(originalWeight);
-		System.out.println(newWeight);
+//		System.out.println(newWeight);
 
 		active = true;
 		newWeight = updateWeight(originalWeight);
-		System.out.println(newWeight);
+//		System.out.println(newWeight);
 	}
 
 	private double updateWeight(double originalWeight) {
