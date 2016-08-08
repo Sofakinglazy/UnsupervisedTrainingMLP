@@ -166,4 +166,40 @@ public class Utils {
 	private static double normalise(double original){
 		return original/FULL_VALUE_PIXEL;
 	}
+	
+	public static double[][] combine(double[][] array1, double[][] array2) {
+		int rows = array1.length + array2.length;
+		if (array1[0].length != array2[0].length) {
+			System.err.println("The two array cannot be combined.");
+			System.exit(0);
+		}
+		double[][] array = new double[rows][];
+		for (int i = 0; i < rows; i++) {
+			array[i] = new double[array1[0].length];
+			if (i < array1.length) {
+				for (int j = 0; j < array1[0].length; j++) {
+					array[i][j] = array1[i][j];
+				}
+			} else {
+				for (int j = 0; j < array2[0].length; j++) {
+					array[i][j] = array2[i-array1[0].length][j];
+				}
+			}
+		}
+		test(array);
+		return array;
+	}
+
+	private static void test(double[][] array) {
+		// test
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < array.length; i++){
+			for (int j = 0; j < array[0].length; j++){
+				sb.append(array[i][j]);
+				sb.append(", ");
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb.toString());
+	}
 }

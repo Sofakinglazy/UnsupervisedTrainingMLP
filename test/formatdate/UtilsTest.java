@@ -59,9 +59,27 @@ public class UtilsTest extends TestCase {
 	}
 	
 	public void testFormatImagesForNeuralNetwork(){
-		double[][] input = Utils.formatImagesForNeuralNetwork();
+		double[][] input = Utils.formatImagesForNeuralNetwork("test");
 		System.out.println(input.length);
 		System.out.println(input[0].length);
 	}
 	
+	public void testCombineTwoArrays(){
+		double[][] array1 = createNewMatrix(1);
+		double[][] array2 = createNewMatrix(2);
+		double[][] array = Utils.combine(array1, array2);
+		assertEquals(6, array.length);
+		assertEquals(3, array[0].length);
+	}
+
+	private double[][] createNewMatrix(double value) {
+		double[][] array = new double[3][];
+		for (int i = 0; i < array.length; i++){
+			array[i] = new double[3];
+			for (int j = 0; j < array[0].length; j++){
+				array[i][j] = value;
+			}
+		}
+		return array;
+	}
 }

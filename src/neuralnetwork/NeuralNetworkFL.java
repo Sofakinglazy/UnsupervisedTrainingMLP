@@ -97,6 +97,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 				for(int k = 0; k < layers[i].nodes[j].weights.length; k++){
 					// test 
 					System.out.println("[" + i + "," + j + "," + k + "]: " + layers[i].nodes[j].weights[k]);
+					
 					layers[i].nodes[j].weightsDiff[k] = layers[i-1].nodes[k].output * increaseFactor - decayFactor * layers[i].nodes[j].weights[k];
 					layers[i].nodes[j].weights[k] = layers[i].nodes[j].weights[k] + layers[i].nodes[j].weightsDiff[k];
 				}

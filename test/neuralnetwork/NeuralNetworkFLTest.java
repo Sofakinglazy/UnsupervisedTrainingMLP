@@ -8,13 +8,6 @@ public class NeuralNetworkFLTest extends TestCase {
 	private boolean active = false;
 	private double increaseFactor = 0.5d;
 	private double decayFactor = 0.2d;
-	private long maxNumOfIterations = 10000;
-	private int[] numOfNodes = { 3, 4, 4, 2 };
-	private double[] fixedBias = { 0.5d, 0.8d, 0.5d };
-
-	double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0,
-													// 1}
-	double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 
 	private double[][] assignOutputSamples() {
 		double[][] outputSamples = new double[3][];
@@ -48,11 +41,11 @@ public class NeuralNetworkFLTest extends TestCase {
 	public void testForceLearningRules() {
 		double originalWeight = 0.123456123d;
 		double newWeight = updateWeight(originalWeight);
-//		System.out.println(newWeight);
+		// System.out.println(newWeight);
 
 		active = true;
 		newWeight = updateWeight(originalWeight);
-//		System.out.println(newWeight);
+		// System.out.println(newWeight);
 	}
 
 	private double updateWeight(double originalWeight) {
@@ -66,16 +59,39 @@ public class NeuralNetworkFLTest extends TestCase {
 	}
 
 	public void testTrainNetwork() {
+		double increaseFactor = 0.5d;
+		double decayFactor = 0.2d;
+		long maxNumOfIterations = 10000;
+		int[] numOfNodes = { 3, 4, 4, 1 };
+		double[] fixedBias = { 0.5d, 0.8d, 0.5d };
+
+		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0,
+														// 0,
+														// 1}
+		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
 		nn.trainNetwork();
 	}
-	
+
 	public void testTrainNetworkWithRealData() {
 		double[][] imageWithLabelOne = Utils.formatImagesWithSameLabelForNeuralNetwork(1);
 		double[][] imageWithLabelTwo = Utils.formatImagesWithSameLabelForNeuralNetwork(2);
-		
+
 		System.out.printf("label_one_imgae:[%d,%d]\n", imageWithLabelOne.length, imageWithLabelOne[0].length);
 		System.out.printf("label_two_imgae:[%d,%d]\n", imageWithLabelTwo.length, imageWithLabelTwo[0].length);
+
+		double increaseFactor = 0.5d;
+		double decayFactor = 0.2d;
+		long maxNumOfIterations = 10000;
+		int[] numOfNodes = { 784, 50, 50, 10 };
+		double[] fixedBias = { 0.5d, 0.8d, 0.5d };
+
+		double[][] inputSamples = Utils.combine(imageWithLabelOne, imageWithLabelTwo);
+		double[][] outputSamples = Utils.combine(imageWithLabelOne, imageWithLabelTwo);
+
+		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
+				increaseFactor, decayFactor, fixedBias);
 	}
+
 }
