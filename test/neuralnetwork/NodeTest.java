@@ -25,5 +25,14 @@ public class NodeTest extends TestCase {
 		Node node = new Node(3);
 		assertEquals(null, node.lastTime);
 		node.saveAsLastTime();
+		assertFalse(node.equals(node.lastTime));
+	}
+	
+	public void testEqual(){
+		Node node = new Node(3);
+		Node test = new Node(4);
+		assertFalse(node.equals(test));
+		test = new Node(node);
+		assertTrue(node.equals(test));
 	}
 }
