@@ -12,6 +12,7 @@ public class Node implements Serializable{
 	public double error;
 	
 	public boolean active;
+	public Node lastTime;
 	
 	public Node(int numOfInputs){
 		weights = new double[numOfInputs];
@@ -25,6 +26,17 @@ public class Node implements Serializable{
 		weightsDiff = new double[numOfInputs];
 		initRandomWeights();
 		bias = fixedBias;
+	}
+	
+	public Node(Node node){
+		output = node.output;
+		weights = node.weights;
+		weightsDiff = node.weightsDiff;
+		bias = node.bias;
+		biasDiff = node.biasDiff;
+		error = node.error;
+		active = node.active;
+		lastTime = node.lastTime;
 	}
 	
 	private void initRandomWeights(){
@@ -49,6 +61,10 @@ public class Node implements Serializable{
 			weights[i] = Math.round(generateSmallRandomNumber()); // generate -1, 0, 1
 			weightsDiff[i] = 0;
 		}
+	}
+	
+	public void saveAsLastTime(){
+		lastTime = new Node(this);
 	}
 	
 	public String toString(){

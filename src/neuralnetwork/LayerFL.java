@@ -29,13 +29,25 @@ public class LayerFL extends Layer implements Serializable{
 	}
 	
 	public void feedForward(){
+		// save the current status before update
+		saveAsLastTime();
 		for (int i = 0; i < nodes.length; i++){
-			sum = nodes[i].bias;
+			sum = 0;
 			for (int j = 0; j < nodes[i].weights.length; j++){
+				// check if the direct connected node is active 
+				// if yes, give the corresponding nodes a bias
+				if (i == j)
+					sum = nodes[i].bias;
 				sum = sum + inputs[j] * nodes[i].weights[j];
 			}
 			nodes[i].output = sum > 0 ? 1 : 0;
 			nodes[i].active = sum > 0 ? true : false;
+		}
+	}
+
+	private void saveAsLastTime() {
+		for (int i = 0; i < nodes.length; i++){
+			nodes[i].saveAsLastTime();
 		}
 	}
 }

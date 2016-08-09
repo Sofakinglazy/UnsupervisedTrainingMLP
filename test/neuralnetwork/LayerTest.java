@@ -7,16 +7,9 @@ public class LayerTest extends TestCase {
 
 	public void testGetOutputs(){
 		Layer layer = new Layer(3, 2);
-		
 		double[] inputs = {1, 2, 1};
-		
 		layer.inputs = inputs;
-		
-		System.out.println(layer);
-		
 		layer.feedForward();
-		
-		System.out.println(layer);
 	}
 	
 	public void testConstructorOfLayerFL(){
@@ -27,5 +20,16 @@ public class LayerTest extends TestCase {
 		firstLayer.setIntegerWeithts();
 		
 		System.out.println(firstLayer.nodes[0]);
+	}
+	
+	public void testSetAsLastTime(){
+		LayerFL layer = new LayerFL(3, 2, 1);
+		
+		double[] inputs = {1, 2, 1};
+		layer.inputs = inputs;
+		
+		System.out.println(layer);
+		layer.feedForward();
+		System.out.println(layer);
 	}
 }

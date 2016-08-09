@@ -4,81 +4,76 @@ import java.io.Serializable;
 
 import loggerutils.LoggerUtils;
 
-public class NeuralNetworkFL implements NeuralNetwork, Serializable{
-	
+public class NeuralNetworkFL implements NeuralNetwork, Serializable {
+
 	private double increaseFactor;
 	private double decayFactor;
 	private double[] fixedBias;
 	private double[][] inputs;
 	private double[][] expectedOutput;
-	private double[][] actualOutput; 
+	private double[][] actualOutput;
 	private int numOfLayers;
 	private int numOfInputSet;
 	private int currSampleIndex;
 	private long maxNumOfIterations;
-	
+
 	private LayerFL[] layers;
 
-	public NeuralNetworkFL(int[] numOfNodes, 
-						double[][] inputSamples,
-						double[][] outputSamples, 
-						long maxNumOfIterations, 
-						double increaseFactor, 
-						double decayFactor,
-						double[] fixedBias){
-		if (numOfNodes.length != 4){
+	public NeuralNetworkFL(int[] numOfNodes, double[][] inputSamples, double[][] outputSamples, long maxNumOfIterations,
+			double increaseFactor, double decayFactor, double[] fixedBias) {
+		if (numOfNodes.length != 4) {
 			System.err.println("This network only has 4 layers.");
 			System.exit(0);
 		}
-		if (numOfNodes[1] != numOfNodes[2]){
+		if (numOfNodes[1] != numOfNodes[2]) {
 			System.err.println("The nodes number in hidden layer one must be equal to hidden layer one.");
 			System.exit(0);
 		}
-		if (increaseFactor < decayFactor){
+		if (increaseFactor < decayFactor) {
 			System.err.println("Increase factor must be greater than decay factor for force learning.");
 			System.exit(0);
 		}
-		
+
 		this.numOfInputSet = inputSamples.length;
 		this.numOfLayers = numOfNodes.length;
 		this.maxNumOfIterations = maxNumOfIterations;
 		this.increaseFactor = increaseFactor;
 		this.decayFactor = decayFactor;
 		this.fixedBias = fixedBias;
-		
+
 		inputs = new double[numOfInputSet][numOfNodes[0]];
-		expectedOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length-1]];
-		actualOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length-1]];
-		
-		for (int i = 0; i < inputSamples.length; i++){
-			for (int j = 0; j < inputSamples[i].length; j++){
+		expectedOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length - 1]];
+		actualOutput = new double[numOfInputSet][numOfNodes[numOfNodes.length - 1]];
+
+		for (int i = 0; i < inputSamples.length; i++) {
+			for (int j = 0; j < inputSamples[i].length; j++) {
 				inputs[i][j] = inputSamples[i][j];
 			}
 		}
-		
-		for (int i = 0; i < outputSamples.length; i++){
-			for (int j = 0; j < outputSamples[i].length; j++){
+
+		for (int i = 0; i < outputSamples.length; i++) {
+			for (int j = 0; j < outputSamples[i].length; j++) {
 				expectedOutput[i][j] = outputSamples[i][j];
 			}
 		}
-		
+
 		layers = new LayerFL[numOfNodes.length];
-		layers[0] = new LayerFL(numOfNodes[0], numOfNodes[0]);// input layer
-		for (int i = 1; i < numOfNodes.length; i++){
-			layers[i] = new LayerFL(numOfNodes[i-1], numOfNodes[i], fixedBias[i-1]); 
-		} 
+		layers[0] = new LayerFL(numOfNodes[0], numOfNodes[0], 0d);// input layer
+		for (int i = 1; i < numOfNodes.length; i++) {
+			layers[i] = new LayerFL(numOfNodes[i - 1], numOfNodes[i], fixedBias[i - 1]);
+		}
 		setIntegerWeightsOfInputToFirstHiddenLayer();
-		
-//		LoggerUtils.createLogger();
+
+		// LoggerUtils.createLogger();
 	}
 
 	@Override
 	public void trainNetwork() {
 		int currIteration = 0;
 		do {
-			for (currSampleIndex = 0; currSampleIndex < numOfInputSet; currSampleIndex++){
+			for (currSampleIndex = 0; currSampleIndex < numOfInputSet; currSampleIndex++) {
 				// assign inputs
-				for (int i = 0; i < inputs[currSampleIndex].length; i++){
+				for (int i = 0; i < inputs[currSampleIndex].length; i++) {
 					layers[0].inputs[i] = inputs[currSampleIndex][i];
 				}
 				feedForward();
@@ -87,18 +82,26 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 			currIteration++;
 		} while (currIteration > maxNumOfIterations);
 	}
-	
+
 	private void updateWeights() {
 		// Shouldn't update the input layer and first hidden layer
-		for (int i = 2; i < numOfLayers; i++){
+		for (int i = 2; i < numOfLayers; i++) {
 			// Update each node
-			for (int j = 0; j < layers[i].nodes.length; j++){
-				// Update each weight 
-				for(int k = 0; k < layers[i].nodes[j].weights.length; k++){
-					// test 
+			for (int j = 0; j < layers[i].nodes.length; j++) {
+				// Update each weight
+				for (int k = 0; k < layers[i].nodes[j].weights.length; k++) {
+					// test
 					System.out.println("[" + i + "," + j + "," + k + "]: " + layers[i].nodes[j].weights[k]);
-					
-					layers[i].nodes[j].weightsDiff[k] = layers[i-1].nodes[k].output * increaseFactor - decayFactor * layers[i].nodes[j].weights[k];
+
+					double increase = 0d;
+					// only last time the corresponding node active will
+					// pass its bias to this one
+					if (layers[i - 1].nodes[j].lastTime != null) {
+						if (layers[i - 1].nodes[j].lastTime.active) {
+							increase = layers[i - 1].nodes[k].output * increaseFactor;
+						}
+					}
+					layers[i].nodes[j].weightsDiff[k] = increase - decayFactor * layers[i].nodes[j].weights[k];
 					layers[i].nodes[j].weights[k] = layers[i].nodes[j].weights[k] + layers[i].nodes[j].weightsDiff[k];
 				}
 			}
@@ -106,14 +109,14 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable{
 	}
 
 	private void feedForward() {
-		for (int i = 0; i < layers[0].nodes.length; i++){
+		for (int i = 0; i < layers[0].nodes.length; i++) {
 			layers[0].nodes[i].output = layers[0].inputs[i];
 		}
 		layers[1].inputs = layers[0].inputs;
-		for (int i = 1; i < layers.length; i++){
+		for (int i = 1; i < layers.length; i++) {
 			layers[i].feedForward();
-			if (i != layers.length-1){
-				layers[i+1].inputs = layers[i].getOutputs();
+			if (i != layers.length - 1) {
+				layers[i + 1].inputs = layers[i].getOutputs();
 			}
 		}
 	}
