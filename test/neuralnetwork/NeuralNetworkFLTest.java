@@ -93,10 +93,12 @@ public class NeuralNetworkFLTest extends TestCase {
 		double[][] outputSamples = Utils.combine(output1, output2);
 		
 
-		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
+		NeuralNetwork nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
 		
 		nn.trainNetwork();
+		
+		NeuralNetworkIO.saveNeuralNetwork(nn, "fl.nn");
 	}
 
 	private double[][] assignOutputs(int rows, int cols, int index) {
@@ -111,6 +113,26 @@ public class NeuralNetworkFLTest extends TestCase {
 			}
 		}
 		return outputs;
+	}
+	
+	public void testTestNeuralNetwork(){
+		if (NeuralNetworkIO.PATH != "fl.nn"){
+			return;
+		}
+		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork();
+		
+		double[][] testSamples = Utils.formatImagesWithSameLabelForNeuralNetwork(1, "test");
+		double[][] testOutputs = nn.testNetwork(testSamples);
+		
+		for (int i = 0; i < testOutputs.length; i++){
+			for (int j = 0; j < testOutputs[i].length; j++){
+				// first output should be 1 and others should be zeros
+				if (j == 0)
+					System.out.printf("<Network, Actual>: %d, %d", testOutputs[i][j], 1);
+				else 
+					System.out.printf("<Network, Actual>: %d, %d", testOutputs[i][j], 0);
+			}
+		}
 	}
 	
 }

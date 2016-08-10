@@ -162,6 +162,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 		System.out.println(s);
 	}
 	
+	@Override
 	public double[][] testNetwork(double[][] testSamples){
 		double[][] outputs = new double[testSamples.length][];
 		

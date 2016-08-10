@@ -80,11 +80,11 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 				feedForward();
 				updateWeights();
 				// output the last five changes in weights 
-				if (currSampleIndex >= (numOfInputSet - 5)){
-					calculateWeightsError();
-				}
+//				if (currSampleIndex >= (numOfInputSet - 5)){
+//					calculateWeightsError();
+//				}
 			}
-			calculateWeightsErrorBetweenDiffIteration(lastTime);
+//			calculateWeightsErrorBetweenDiffIteration(lastTime);
 			currIteration++;
 			System.out.println("Current Iteration: " + currIteration);
 		} while (currIteration < maxNumOfIterations);
@@ -136,9 +136,6 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 			for (int j = 0; j < layers[i].nodes.length; j++) {
 				// Update each weight
 				for (int k = 0; k < layers[i].nodes[j].weights.length; k++) {
-					// test
-//					System.out.println("[" + i + "," + j + "," + k + "]: " + layers[i].nodes[j].weights[k]);
-
 					double increase = 0d;
 					// only when last time the corresponding node is active will
 					// pass its bias to this one
@@ -152,7 +149,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 				}
 			}
 			// test
-			printLayer(i);
+//			printLayer(i);
 		}
 	}
 
@@ -186,8 +183,32 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 
 	@Override
 	public double[][] testNetwork(double[][] testSamples) {
-		// TODO Auto-generated method stub
-		return null;
+		double[][] outputs = new double[testSamples.length][];
+		
+		for (int i = 0; i < testSamples.length; i++){
+			outputs[i] = new double[expectedOutput[0].length];
+			outputs[i] = feedForward(testSamples[i]);
+		}
+		
+		return outputs;
+	}
+	
+	private double[] feedForward(double[] inputs) {
+		// Input layer's output is equal to its input
+		for (int i = 0; i < layers[0].nodes.length; i++){
+			layers[0].nodes[i].output = inputs[i];
+		}
+		
+		layers[1].inputs = inputs;
+		for (int i = 1; i < numOfLayers; i++){
+			layers[i].feedForward();
+			if (i != numOfLayers - 1){
+				// the last output was zero!!!!
+				layers[i+1].inputs = layers[i].getOutputs();
+			}
+		}
+		
+		return layers[numOfLayers-1].getOutputs();
 	}
 
 }
