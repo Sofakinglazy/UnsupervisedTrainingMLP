@@ -3,14 +3,15 @@ package neuralnetwork;
 import java.io.*;
 
 public class NeuralNetworkIO {
-	public static final String PATH = "ann.ser";
+	public static String PATH = "";
 	
 	public static FileOutputStream fos = null;
 	public static FileInputStream fis = null;
 	public static ObjectOutputStream oos = null;
 	public static ObjectInputStream ois = null;
 	
-	public static void saveNeuralNetwork(NeuralNetworkBP nn){
+	public static void saveNeuralNetwork(NeuralNetwork nn, String path){
+		PATH = path;
 		try {
 			fos = new FileOutputStream(PATH);
 			oos = new ObjectOutputStream(fos);
@@ -29,12 +30,12 @@ public class NeuralNetworkIO {
 		}
 	}
 	
-	public static NeuralNetworkBP loadNeuralNetwork(){
-		NeuralNetworkBP nn = null;
+	public static NeuralNetwork loadNeuralNetwork(){
+		NeuralNetwork nn = null;
 		try {
 			fis = new FileInputStream(PATH);
 			ois = new ObjectInputStream(fis);
-			nn = (NeuralNetworkBP) ois.readObject();
+			nn = (NeuralNetwork) ois.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -50,4 +51,5 @@ public class NeuralNetworkIO {
 		
 		return nn;
 	}
+	
 }

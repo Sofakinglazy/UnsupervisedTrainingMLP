@@ -71,7 +71,7 @@ public class Utils {
 		double[][] images = new double[keys.size()][];
 		for (Integer i : keys) {
 			images[i] = formatImagesToRowData(map.get(i));
-			System.out.println("Finish extracting No." + i + " image data.");
+//			System.out.println("Finish extracting No." + i + " image data.");
 		}
 		return images;
 	}
@@ -182,11 +182,10 @@ public class Utils {
 				}
 			} else {
 				for (int j = 0; j < array2[0].length; j++) {
-					array[i][j] = array2[i-array1[0].length][j];
+					array[i][j] = array2[i-array1.length][j];
 				}
 			}
 		}
-		test(array);
 		return array;
 	}
 

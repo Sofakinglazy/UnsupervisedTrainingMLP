@@ -35,4 +35,10 @@ public class NodeTest extends TestCase {
 		test = new Node(node);
 		assertTrue(node.equals(test));
 	}
+	
+	public void testClone(){
+		Node node = new Node(3);
+		Node clone = node.cloneNode();
+		assertTrue(node.equals(clone));
+	}
 }

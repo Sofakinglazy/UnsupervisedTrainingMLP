@@ -28,8 +28,17 @@ public class LayerTest extends TestCase {
 		double[] inputs = {1, 2, 1};
 		layer.inputs = inputs;
 		
-		System.out.println(layer);
 		layer.feedForward();
-		System.out.println(layer);
+	}
+	
+	public void testCloneLayer(){
+		LayerFL layer = new LayerFL(3, 2, 1);
+		LayerFL clone = layer.cloneLayer();
+		
+		assertEquals(clone.inputs.length, 3);
+		assertEquals(clone.nodes.length, 2);
+		for (int i = 0; i < layer.nodes.length; i++){
+			assertTrue(layer.nodes[i].equals(clone.nodes[i]));
+		}
 	}
 }

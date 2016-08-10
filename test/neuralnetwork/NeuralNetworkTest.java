@@ -15,10 +15,10 @@ public class NeuralNetworkTest extends TestCase {
 		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0, 1}
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		
-		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
+		NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-//		nn = NeuralNetworkIO.loadNeuralNetwork();
+		nn = NeuralNetworkIO.loadNeuralNetwork();
 		
 		double[][] outputs = nn.testNetwork(inputSamples);
 		String s = "";
@@ -28,7 +28,7 @@ public class NeuralNetworkTest extends TestCase {
 			}
 			s = s + "\n";
 		}
-//		System.out.println(s);
+		System.out.println(s);
 	}
 
 	private double[][] assignOutputSamples() {
@@ -94,14 +94,14 @@ public class NeuralNetworkTest extends TestCase {
 		double[][] inputSamples = assignInputSamples(); // {1, 0, 0; 0, 1, 0; 0, 0, 1}
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		
-		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
+		NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-//		nn.trainNetwork();
+		nn.trainNetwork();
 		
-//		NeuralNetworkIO.saveNeuralNetwork(nn);
+		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
 		
-//		NeuralNetworkBP nn1 = NeuralNetworkIO.loadNeuralNetwork();
+		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
 	}
 	
@@ -120,14 +120,12 @@ public class NeuralNetworkTest extends TestCase {
 		
 		System.out.println("Finish extracting data.");
 		
-		inputSamples.clone();
-		
 		NeuralNetworkBP nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 					learningRate, momentum, minError, maxNumOfIterations);
 		
-		nn.trainNetwork();
-		
-		NeuralNetworkIO.saveNeuralNetwork(nn);
+//		nn.trainNetwork();
+//		
+//		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
 	}
 	
 }

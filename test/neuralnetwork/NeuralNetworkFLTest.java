@@ -71,27 +71,46 @@ public class NeuralNetworkFLTest extends TestCase {
 		double[][] outputSamples = assignOutputSamples(); // {1; 0; 0}
 		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
-		nn.trainNetwork();
+//		nn.trainNetwork();
 	}
 
 	public void testTrainNetworkWithRealData() {
-		double[][] imageWithLabelOne = Utils.formatImagesWithSameLabelForNeuralNetwork(1);
-		double[][] imageWithLabelTwo = Utils.formatImagesWithSameLabelForNeuralNetwork(2);
+		double[][] imageWithLabelOne = Utils.formatImagesWithSameLabelForNeuralNetwork(1, "test");
+		double[][] imageWithLabelTwo = Utils.formatImagesWithSameLabelForNeuralNetwork(2, "test");
 
 		System.out.printf("label_one_imgae:[%d,%d]\n", imageWithLabelOne.length, imageWithLabelOne[0].length);
 		System.out.printf("label_two_imgae:[%d,%d]\n", imageWithLabelTwo.length, imageWithLabelTwo[0].length);
 
 		double increaseFactor = 0.5d;
 		double decayFactor = 0.2d;
-		long maxNumOfIterations = 10000;
+		long maxNumOfIterations = 5;
 		int[] numOfNodes = { 784, 50, 50, 10 };
 		double[] fixedBias = { 0.5d, 0.8d, 0.5d };
 
 		double[][] inputSamples = Utils.combine(imageWithLabelOne, imageWithLabelTwo);
-		double[][] outputSamples = Utils.combine(imageWithLabelOne, imageWithLabelTwo);
+		double[][] output1 = assignOutputs(imageWithLabelOne.length, 10, 0);
+		double[][] output2 = assignOutputs(imageWithLabelTwo.length, 10, 1);
+		double[][] outputSamples = Utils.combine(output1, output2);
+		
 
 		NeuralNetworkFL nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
+		
+		nn.trainNetwork();
 	}
 
+	private double[][] assignOutputs(int rows, int cols, int index) {
+		double[][] outputs = new double[rows][];
+		for (int i = 0; i < rows; i++){
+			outputs[i] = new double[cols];
+			for (int j = 0; j < cols; j++){
+				if (index == j)
+					outputs[i][j] = 1;
+				else 
+					outputs[i][j] = 0; 
+			}
+		}
+		return outputs;
+	}
+	
 }

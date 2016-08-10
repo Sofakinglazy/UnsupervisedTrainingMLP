@@ -3,51 +3,57 @@ package neuralnetwork;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class Node implements Serializable{
-	
+public class Node implements Serializable {
+
 	public double output;
 	public double[] weights;
 	public double bias;
 	public double[] weightsDiff;
 	public double biasDiff;
 	public double error;
-	
+
 	public boolean active;
 	public Node lastTime;
-	
-	public Node(int numOfInputs){
+
+	public Node(int numOfInputs) {
 		weights = new double[numOfInputs];
 		weightsDiff = new double[numOfInputs];
 		initRandomWeights();
 		initRamdonBias();
 	}
-	
-	public Node(int numOfInputs, double fixedBias){
+
+	public Node(int numOfInputs, double fixedBias) {
 		weights = new double[numOfInputs];
 		weightsDiff = new double[numOfInputs];
 		initRandomWeights();
 		bias = fixedBias;
 	}
-	
-	public Node(Node node){
+
+	public Node(Node node) {
 		output = node.output;
-		weights = node.weights;
-		weightsDiff = node.weightsDiff;
 		bias = node.bias;
 		biasDiff = node.biasDiff;
 		error = node.error;
 		active = node.active;
 		lastTime = node.lastTime;
+		weights = new double[node.weights.length];
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] = node.weights[i];
+		}
+		weightsDiff = new double[node.weightsDiff.length];
+		for (int i = 0; i < weightsDiff.length; i++) {
+			weightsDiff[i] = node.weightsDiff[i];
+		}
 	}
-	
-	private void initRandomWeights(){
-		for (int i = 0; i < weights.length; i++){
+
+	private void initRandomWeights() {
+		for (int i = 0; i < weights.length; i++) {
 			weights[i] = generateSmallRandomNumber();
 			weightsDiff[i] = 0;
 		}
 	}
-	
-	private void initRamdonBias(){
+
+	private void initRamdonBias() {
 		bias = generateSmallRandomNumber();
 		biasDiff = 0;
 	}
@@ -55,19 +61,27 @@ public class Node implements Serializable{
 	private double generateSmallRandomNumber() {
 		return 2 * Math.random() - 1;
 	}
-	
-	// set weights as -1, 0, 1 
-	public void setIntegerWeithts(){
-		for (int i = 0; i < weights.length; i++){
-			weights[i] = Math.round(generateSmallRandomNumber()); // generate -1, 0, 1
+
+	// set weights as -1, 0, 1
+	public void setIntegerWeithts() {
+		for (int i = 0; i < weights.length; i++) {
+			weights[i] = Math.round(generateSmallRandomNumber()); // generate
+																	// -1, 0, 1
 			weightsDiff[i] = 0;
 		}
 	}
-	
-	public void saveAsLastTime(){
+
+	public void saveAsLastTime() {
+		if (lastTime != null)
+			// dispose the instance
+			lastTime = null;
 		lastTime = new Node(this);
 	}
 	
+	public Node cloneNode() {
+		return new Node(this);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -119,20 +133,18 @@ public class Node implements Serializable{
 		return true;
 	}
 
-	public String toString(){
+	public String toString() {
 		String s = "#NODE#\n";
 		s += "Weights: ";
-		for (int i = 0; i < weights.length; i++){
+		for (int i = 0; i < weights.length; i++) {
 			s = s + weights[i] + " ";
 		}
 		s += "\nWeightsDiff: ";
-		for (int i = 0; i < weights.length; i++){
+		for (int i = 0; i < weights.length; i++) {
 			s = s + weightsDiff[i] + " ";
 		}
-		s = s + "\nOutput: " + output + 
-				"\nBias: " + bias + 
-				"\nError: " + error;
+		s = s + "\nOutput: " + output + "\nBias: " + bias + "\nError: " + error;
 		return s;
 	}
-}
 
+}

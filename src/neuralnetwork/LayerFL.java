@@ -37,7 +37,7 @@ public class LayerFL extends Layer implements Serializable{
 				// check if the direct connected node is active 
 				// if yes, give the corresponding nodes a bias
 				if (i == j)
-					sum = nodes[i].bias;
+					sum = sum + nodes[i].bias;
 				sum = sum + inputs[j] * nodes[i].weights[j];
 			}
 			nodes[i].output = sum > 0 ? 1 : 0;
@@ -49,5 +49,13 @@ public class LayerFL extends Layer implements Serializable{
 		for (int i = 0; i < nodes.length; i++){
 			nodes[i].saveAsLastTime();
 		}
+	}
+
+	public LayerFL cloneLayer() {
+		LayerFL clone = new LayerFL(inputs.length, nodes.length);
+		for (int i = 0; i < nodes.length; i++){
+			clone.nodes[i] = nodes[i].cloneNode();
+		}
+		return clone;
 	}
 }
