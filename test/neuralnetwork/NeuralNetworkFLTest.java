@@ -83,22 +83,22 @@ public class NeuralNetworkFLTest extends TestCase {
 
 		double increaseFactor = 0.5d;
 		double decayFactor = 0.2d;
-		long maxNumOfIterations = 5;
-		int[] numOfNodes = { 784, 50, 50, 10 };
+		long maxNumOfIterations = 10;
+		int[] numOfNodes = { 784, 50, 50, 2 };
 		double[] fixedBias = { 0.5d, 0.8d, 0.5d };
 
 		double[][] inputSamples = Utils.combine(imageWithLabelOne, imageWithLabelTwo);
-		double[][] output1 = assignOutputs(imageWithLabelOne.length, 10, 0);
-		double[][] output2 = assignOutputs(imageWithLabelTwo.length, 10, 1);
+		double[][] output1 = assignOutputs(imageWithLabelOne.length, 2, 0);
+		double[][] output2 = assignOutputs(imageWithLabelTwo.length, 2, 1);
 		double[][] outputSamples = Utils.combine(output1, output2);
 		
 
 		NeuralNetwork nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
 		
-		nn.trainNetwork();
+//		nn.trainNetwork();
 		
-		NeuralNetworkIO.saveNeuralNetwork(nn, "fl.nn");
+//		NeuralNetworkIO.saveNeuralNetwork(nn, "fl.nn");
 	}
 
 	private double[][] assignOutputs(int rows, int cols, int index) {
@@ -116,22 +116,36 @@ public class NeuralNetworkFLTest extends TestCase {
 	}
 	
 	public void testTestNeuralNetwork(){
+		NeuralNetworkIO.PATH = "fl.nn";
 		if (NeuralNetworkIO.PATH != "fl.nn"){
 			return;
 		}
+		
 		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork();
 		
-		double[][] testSamples = Utils.formatImagesWithSameLabelForNeuralNetwork(1, "test");
+		double[][] testSamples = Utils.formatImagesWithSameLabelForNeuralNetwork(2, "test");
 		double[][] testOutputs = nn.testNetwork(testSamples);
 		
-		for (int i = 0; i < testOutputs.length; i++){
+		StringBuilder sb = new StringBuilder();
+		
+		// only print out the first 100 data
+		for (int i = 0; i < 100; i++){
+			sb.append("Data " + i + ": [");
 			for (int j = 0; j < testOutputs[i].length; j++){
-				// first output should be 1 and others should be zeros
-				if (j == 0)
-					System.out.printf("<Network, Actual>: %d, %d", testOutputs[i][j], 1);
-				else 
-					System.out.printf("<Network, Actual>: %d, %d", testOutputs[i][j], 0);
+				sb.append(testOutputs[i][j]);
+				sb.append(", ");
 			}
+			sb.append("]\n");
+		}
+		
+		System.out.println(sb.toString());
+	}
+	
+	public void testPrintLayers(){
+		NeuralNetworkIO.PATH = "fl.nn";
+		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork();
+		for (int i = 2; i < 4; i++){
+			nn.printLayer(i);
 		}
 	}
 	

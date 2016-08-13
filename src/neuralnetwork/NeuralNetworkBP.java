@@ -6,6 +6,8 @@ import loggerutils.LoggerUtils;
 
 public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 
+	private static final long serialVersionUID = 1763320417566459008L;
+	
 	private double learningRate;// user-defined
 	public double[][] actualOutput;
 	public double[][] inputs;
@@ -202,5 +204,15 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 				"Layers:\n";
 		for (int i = 0; i < numOfLayers; i++) System.out.println(layers[i]); 
 		return s;
+	}
+
+	@Override
+	public void printLayer(int layerIndex) {
+		Layer layer = layers[layerIndex];
+		for (int j = 0; j < layer.nodes.length; j++){
+			for (int k = 0; k < layer.nodes[j].weights.length; k++){
+				System.out.println("Print: [" + layerIndex + "," + j + "," + k + "]: " + layer.nodes[j].weights[k]);
+			}
+		}
 	}
 }
