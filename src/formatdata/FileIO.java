@@ -4,18 +4,17 @@ import java.io.*;
 
 public class FileIO {
 
-	private static String filename = "./Data/MNISTDataset_train.txt";
 	private static String PATH = "";
 	
 	private static FileOutputStream fos = null;
 	private static FileInputStream fis = null;
 	private static File file = null;
 
-	public static void writeToFile(String s, String path) {
+	public static void writeToFile(String s, String path, boolean append) {
 		PATH = path;
 		try {
 			file = new File(path);
-			fos = new FileOutputStream(file);
+			fos = new FileOutputStream(file, append);
 
 			if (!file.exists()) {
 				file.createNewFile();
@@ -25,6 +24,8 @@ public class FileIO {
 
 			fos.write(bytes);
 			fos.flush();
+			
+			System.out.println("Successfully write the file.");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -40,7 +41,15 @@ public class FileIO {
 	}
 	
 	public static void writeToFile(String s) {
-		writeToFile(s, "default.txt");
+		writeToFile(s, "default.txt", false);
+	}
+	
+	public static void writeToFile(String s, String path) {
+		writeToFile(s, path, false);
+	}
+	
+	public static void writeToFile(String s, boolean append) {
+		writeToFile(s, "default.txt", append);
 	}
 	
 	public static String readFromFile(String path, String encoding){
@@ -57,6 +66,8 @@ public class FileIO {
 			}
 			
 			sb.deleteCharAt(sb.toString().length()-1);// delete the last "\n"
+			
+			System.out.println("Successfully read the file.");
 			
 			return sb.toString();
 		} catch (IOException e) {

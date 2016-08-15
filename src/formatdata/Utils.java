@@ -218,11 +218,25 @@ public class Utils {
 		return sb.toString();
 	}
 	
+	public static String arrayToString(double[][] array, String seperator, boolean noStringBuilder){
+		String result = "";
+		for (int i = 0; i < array.length; i++){
+			for (int j = 0; j < array[i].length; j++){
+				result += array[i][j];
+				result += seperator;
+			}
+			result += "\n";
+		}
+		
+		System.out.println("Done translating array to a string.");
+		return result;
+	}
+	
 	public static String arrayToString(double[][] array){
 		return arrayToString(array, ",");
 	}
 	
-	private static double[][] importDatasets(String mode) {
+	public static double[][] importDatasets(String mode) {
 		double[][] images = null;
 		double[][] labels = null;
 		if(mode.isEmpty()){
@@ -242,6 +256,10 @@ public class Utils {
 		}
 		
 		return datasets;
+	}
+	
+	public static double[][] importDatasets(){
+		return importDatasets("");
 	}
 
 	@SuppressWarnings("unused")
