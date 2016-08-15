@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class Node implements Serializable {
 
+	private static final long serialVersionUID = -2003769371023163816L;
 	public double output;
 	public double[] weights;
 	public double bias;
@@ -34,8 +35,6 @@ public class Node implements Serializable {
 		bias = node.bias;
 		biasDiff = node.biasDiff;
 		error = node.error;
-		active = node.active;
-		lastTime = node.lastTime;
 		weights = new double[node.weights.length];
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = node.weights[i];
@@ -46,19 +45,19 @@ public class Node implements Serializable {
 		}
 	}
 
-	private void initRandomWeights() {
+	protected void initRandomWeights() {
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = generateSmallRandomNumber();
 			weightsDiff[i] = 0;
 		}
 	}
 
-	private void initRamdonBias() {
+	protected void initRamdonBias() {
 		bias = generateSmallRandomNumber();
 		biasDiff = 0;
 	}
 
-	private double generateSmallRandomNumber() {
+	protected double generateSmallRandomNumber() {
 		return 2 * Math.random() - 1;
 	}
 

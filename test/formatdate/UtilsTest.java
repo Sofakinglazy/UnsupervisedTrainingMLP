@@ -1,10 +1,9 @@
 package formatdate;
 
-import java.nio.file.Paths;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
+import formatdata.ParasNotMatchException;
 import formatdata.Utils;
 import junit.framework.TestCase;
 
@@ -67,7 +66,12 @@ public class UtilsTest extends TestCase {
 	public void testCombineTwoArrays(){
 		double[][] array1 = createNewMatrix(1);
 		double[][] array2 = createNewMatrix(2);
-		double[][] array = Utils.combine(array1, array2);
+		double[][] array = null;
+		try {
+			array = Utils.verticalCombine(array1, array2);
+		} catch (ParasNotMatchException e) {
+			e.printStackTrace();
+		}
 		assertEquals(6, array.length);
 		assertEquals(3, array[0].length);
 	}
@@ -81,5 +85,18 @@ public class UtilsTest extends TestCase {
 			}
 		}
 		return array;
+	}
+	
+	public void testHorizontalCombineTwoArray() {
+		double[][] array1 = createNewMatrix(1);
+		double[][] array2 = createNewMatrix(2);
+		try {
+			double[][] array = Utils.horizontalCombine(array1, array2);
+			assertEquals(3, array.length);
+			assertEquals(6, array[0].length);
+		} catch (ParasNotMatchException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

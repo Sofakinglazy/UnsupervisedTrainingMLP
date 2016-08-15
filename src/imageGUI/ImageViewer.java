@@ -10,6 +10,7 @@ import formatdata.Utils;
 
 public class ImageViewer extends JPanel{
 
+	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 28;
 	public static final int HEIGHT = 28;
 	public static final int SCALE = 6;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class LayerFL extends Layer implements Serializable {
 
+	private static final long serialVersionUID = -5111677653374563966L;
 	private double fixedBias;
 
 	public LayerFL(int numOfInputs, int numOfNodes) {
@@ -52,6 +53,7 @@ public class LayerFL extends Layer implements Serializable {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private double stepFunction(double input){
 		return input > 0 ? 1d : 0d;
 	}

@@ -1,16 +1,15 @@
 package formatdata;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class Utils {
 
-	public static final String CURRENT_PATH = Paths.get("").toAbsolutePath().toString();
-	public static final String IMAGE_PATH = CURRENT_PATH + "/Data/train-images-idx3-ubyte";
-	public static final String LABEL_PATH = CURRENT_PATH + "/Data/train-labels-idx1-ubyte";
-	public static final String TEST_IMAGE_PATH = CURRENT_PATH + "/Data/t10k-images-idx3-ubyte";
-	public static final String TEST_LABEL_PATH = CURRENT_PATH + "/Data/t10k-labels-idx1-ubyte";
+//	public static final String CURRENT_PATH = Paths.get("").toAbsolutePath().toString();
+	public static final String IMAGE_PATH = "./Data/train-images-idx3-ubyte";
+	public static final String LABEL_PATH = "./Data/train-labels-idx1-ubyte";
+	public static final String TEST_IMAGE_PATH = "./Data/t10k-images-idx3-ubyte";
+	public static final String TEST_LABEL_PATH = "./Data/t10k-labels-idx1-ubyte";
 	
 	public static final double FULL_VALUE_PIXEL = 255d;
 
@@ -167,12 +166,11 @@ public class Utils {
 		return original/FULL_VALUE_PIXEL;
 	}
 	
-	public static double[][] combine(double[][] array1, double[][] array2) {
-		int rows = array1.length + array2.length;
+	public static double[][] verticalCombine(double[][] array1, double[][] array2) throws ParasNotMatchException {
 		if (array1[0].length != array2[0].length) {
-			System.err.println("The two array cannot be combined.");
-			System.exit(0);
+			throw new ParasNotMatchException("Two arrays have different rows.");
 		}
+		int rows = array1.length + array2.length;
 		double[][] array = new double[rows][];
 		for (int i = 0; i < rows; i++) {
 			array[i] = new double[array1[0].length];
@@ -188,17 +186,67 @@ public class Utils {
 		}
 		return array;
 	}
-
-	private static void test(double[][] array) {
-		// test
+	
+	public static double[][] horizontalCombine(double[][] array1, double[][] array2) throws ParasNotMatchException{
+		if (array1.length != array2.length){
+			throw new ParasNotMatchException("Two arrays have different rows.");
+		}
+		int cols = array1[0].length + array2[0].length;
+		double[][] array = new double[array1.length][];
+		for (int i = 0; i < array.length; i++){
+			array[i] = new double[cols];
+			for (int j = 0; j < cols; j++){
+				if (j < array1[0].length){
+					array[i][j] = array1[i][j];
+				} else {
+					array[i][j] = array2[i][j-array1[0].length];
+				}
+			}
+		}
+		return array;
+	}
+	
+	public static String arrayToString(double[][] array, String symbol){
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < array.length; i++){
-			for (int j = 0; j < array[0].length; j++){
+			for (int j = 0; j < array[i].length; j++){
 				sb.append(array[i][j]);
-				sb.append(", ");
+				sb.append(symbol);
 			}
 			sb.append("\n");
 		}
-		System.out.println(sb.toString());
+		return sb.toString();
+	}
+	
+	public static String arrayToString(double[][] array){
+		return arrayToString(array, ",");
+	}
+	
+	private static double[][] importDatasets(String mode) {
+		double[][] images = null;
+		double[][] labels = null;
+		if(mode.isEmpty()){
+			images = Utils.formatImagesForNeuralNetwork();
+			labels = Utils.formatLabelsForNeuralNetwork();
+		}
+		else {
+			images = Utils.formatImagesForNeuralNetwork(mode);
+			labels = Utils.formatLabelsForNeuralNetwork(mode);
+		}
+		
+		double[][] datasets = null;
+		try {
+			datasets = Utils.horizontalCombine(images, labels);
+		} catch (ParasNotMatchException e) {
+			e.printStackTrace();
+		}
+		
+		return datasets;
+	}
+
+	@SuppressWarnings("unused")
+	private static void test(double[][] array) {
+		// test
+		System.out.println(arrayToString(array, ", "));
 	}
 }

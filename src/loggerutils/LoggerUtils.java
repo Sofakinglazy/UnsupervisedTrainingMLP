@@ -6,11 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
-import javax.annotation.Resource;
-import javax.rmi.CORBA.Util;
-
-import formatdata.Utils;
-
 public class LoggerUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -85,7 +80,7 @@ public class LoggerUtils {
 	}
 
 	public static String getLogDirectoryPath() {
-		final String logDirectory = Utils.CURRENT_PATH + File.separatorChar + "logs";
+		final String logDirectory = File.separatorChar + "logs";
 		return logDirectory;
 	}
 	

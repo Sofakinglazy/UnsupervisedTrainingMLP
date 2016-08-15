@@ -152,6 +152,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 		
 	}
 
+	@SuppressWarnings("unused")
 	private void test() {
 		// test
 		String s = "";

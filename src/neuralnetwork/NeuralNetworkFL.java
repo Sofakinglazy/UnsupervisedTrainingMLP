@@ -208,7 +208,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 				layers[i + 1].inputs = layers[i].getOutputs();
 			}
 			else
-				// the last layer shouldnt limit sum with step function
+				// the last layer shouldn't limit sum with step function
 				layers[i].feedForward(true);
 		}
 

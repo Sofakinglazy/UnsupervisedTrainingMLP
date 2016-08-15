@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class MNISTImageFileTest extends TestCase {
 	
-	public static final String IMAGE_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/train-images-idx3-ubyte";
+	private final String IMAGE_PATH = "/Users/yangxiao/Dropbox/Southampton learning material/Dissertation/Data/train-images-idx3-ubyte";
 	
 	public void testToString(){
 		try {

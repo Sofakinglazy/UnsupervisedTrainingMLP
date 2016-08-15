@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Layer implements Serializable{
 	
+	private static final long serialVersionUID = -351549530270374705L;
+	
 	protected double sum; 
 	public double[] inputs;
 	public Node[] nodes;

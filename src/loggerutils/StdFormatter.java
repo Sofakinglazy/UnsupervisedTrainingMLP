@@ -5,6 +5,8 @@ import java.util.logging.*;
 public class StdFormatter extends SimpleFormatter{
 	
 	private static class StdOutErrLevel extends Level{
+		private static final long serialVersionUID = -2208231121167636762L;
+
 		protected StdOutErrLevel(String name, int value) {
 			super(name, value);
 		}
