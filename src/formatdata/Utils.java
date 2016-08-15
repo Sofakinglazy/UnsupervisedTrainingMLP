@@ -214,22 +214,10 @@ public class Utils {
 				sb.append(symbol);
 			}
 			sb.append("\n");
+//			System.out.println("Finished " + i + " row.");
 		}
-		return sb.toString();
-	}
-	
-	public static String arrayToString(double[][] array, String seperator, boolean noStringBuilder){
-		String result = "";
-		for (int i = 0; i < array.length; i++){
-			for (int j = 0; j < array[i].length; j++){
-				result += array[i][j];
-				result += seperator;
-			}
-			result += "\n";
-		}
-		
 		System.out.println("Done translating array to a string.");
-		return result;
+		return sb.toString();
 	}
 	
 	public static String arrayToString(double[][] array){
@@ -264,7 +252,6 @@ public class Utils {
 
 	@SuppressWarnings("unused")
 	private static void test(double[][] array) {
-		// test
 		System.out.println(arrayToString(array, ", "));
 	}
 }

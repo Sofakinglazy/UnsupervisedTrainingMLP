@@ -47,7 +47,7 @@ public class FileIOTest extends TestCase {
 	public void testFileIOwithRealData() {
 		// training data
 		double[][] array = Utils.importDatasets();
-		String s = Utils.arrayToString(array, ",", true);
+		String s = Utils.arrayToString(array);
 		String path = "./Data/normaliseData/train.txt";
 		File file = new File(path);
 		FileIO.writeToFile(s, path);
