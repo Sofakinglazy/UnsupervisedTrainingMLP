@@ -51,6 +51,7 @@ public class LoggerUtils {
 			los = new LoggingOutputStream(logger, StdFormatter.STDERR);
 			System.setErr(new PrintStream(los, true));
 		} catch (Exception e) {
+			e.printStackTrace();
 			LoggerUtils.warn("Error in creating logging file handler", e);
 		}
 
@@ -80,12 +81,12 @@ public class LoggerUtils {
 	}
 
 	public static String getLogDirectoryPath() {
-		final String logDirectory = File.separatorChar + "logs";
+		final String logDirectory = "." + File.separatorChar + "logs";
 		return logDirectory;
 	}
 	
 	public static String getPathPattern(String logDirectoryPath){
-		final String currentTime = new SimpleDateFormat("yyyyMMddhhmm").format(new Date());
+		final String currentTime = new SimpleDateFormat("MMddhhmmss").format(new Date());
 		final String pathPattern = logDirectoryPath + File.separatorChar + currentTime + ".log";
 		return pathPattern;
 	}

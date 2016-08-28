@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 
 public class NeuralNetworkTest extends TestCase {
 	
+	private static final String PATH = "./network/bp.nn";
+	
 	public void testConstructor(){
 		double learningRate = 0.5d;
 		long maxNumOfIterations = 10000;
@@ -18,7 +20,7 @@ public class NeuralNetworkTest extends TestCase {
 		NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputSamples, outputSamples, 
 								learningRate, momentum, minError, maxNumOfIterations);
 		
-//		nn = NeuralNetworkIO.loadNeuralNetwork();
+//		nn = NeuralNetworkIO.loadNeuralNetwork(PATH);
 		
 		double[][] outputs = nn.testNetwork(inputSamples);
 //		String s = "";
@@ -31,7 +33,7 @@ public class NeuralNetworkTest extends TestCase {
 //		System.out.println(s);
 	}
 
-	private double[][] assignOutputSamples() {
+	public static double[][] assignOutputSamples() {
 		double[][] outputSamples = new double[3][];
 		outputSamples[0] = new double[1];
 		outputSamples[1] = new double[1];
@@ -42,7 +44,7 @@ public class NeuralNetworkTest extends TestCase {
 		return outputSamples;
 	}
 
-	private double[][] assignInputSamples() {
+	public static double[][] assignInputSamples() {
 		double[][] inputSamples = new double[3][];
 		inputSamples[0] = new double[3];
 		inputSamples[1] = new double[3];
@@ -99,7 +101,7 @@ public class NeuralNetworkTest extends TestCase {
 		
 //		nn.trainNetwork();
 //		
-//		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
+//		NeuralNetworkIO.saveNeuralNetwork(nn, PATH);
 //		
 //		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork();
 		
@@ -107,9 +109,9 @@ public class NeuralNetworkTest extends TestCase {
 	
 	public void testBPNetworkWithRealData(){
 		double learningRate = 0.5d;
-		long maxNumOfIterations = 10000;
+		long maxNumOfIterations = 1000;
 		double minError = 1E-4d;
-		double momentum = 0.3d;
+		double momentum = 0.5d;
 		int[] numOfNodes = {784, 100, 100, 10};
 		
 		System.out.println("Start to extract data.");
@@ -125,7 +127,7 @@ public class NeuralNetworkTest extends TestCase {
 		
 		nn.trainNetwork();
 		
-		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
+		NeuralNetworkIO.saveNeuralNetwork(nn, PATH);
 	}
 	
 }

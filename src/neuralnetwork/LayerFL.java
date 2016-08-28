@@ -45,6 +45,7 @@ public class LayerFL extends Layer implements Serializable {
 					sum = sum + nodes[i].bias;
 				sum = sum + inputs[j] * nodes[i].weights[j];
 			}
+			nodes[i].temp = sum;
 			nodes[i].output = sum > 0 ? 1 : 0;
 			nodes[i].active = sum > 0 ? true : false;
 			if (noOutputFunc) {
@@ -71,4 +72,5 @@ public class LayerFL extends Layer implements Serializable {
 		}
 		return clone;
 	}
+	
 }

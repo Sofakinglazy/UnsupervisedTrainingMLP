@@ -1,11 +1,15 @@
 package neuralnetwork;
 
+import java.io.File;
+
 import formatdata.ParasNotMatchException;
 import formatdata.Utils;
 import junit.framework.TestCase;
 
 public class NeuralNetworkFLTest extends TestCase {
 
+	private static String PATH = "./network/fl.nn";
+	
 	private boolean active = false;
 	private double increaseFactor = 0.5d;
 	private double decayFactor = 0.2d;
@@ -79,12 +83,12 @@ public class NeuralNetworkFLTest extends TestCase {
 		double[][] imageWithLabelOne = Utils.formatImagesWithSameLabelForNeuralNetwork(1, "test");
 		double[][] imageWithLabelTwo = Utils.formatImagesWithSameLabelForNeuralNetwork(2, "test");
 
-		System.out.printf("label_one_imgae:[%d,%d]\n", imageWithLabelOne.length, imageWithLabelOne[0].length);
-		System.out.printf("label_two_imgae:[%d,%d]\n", imageWithLabelTwo.length, imageWithLabelTwo[0].length);
+//		System.out.printf("label_one_imgae:[%d,%d]\n", imageWithLabelOne.length, imageWithLabelOne[0].length);
+//		System.out.printf("label_two_imgae:[%d,%d]\n", imageWithLabelTwo.length, imageWithLabelTwo[0].length);
 
-		double increaseFactor = 0.5d;
-		double decayFactor = 0.2d;
-		long maxNumOfIterations = 10;
+		double increaseFactor = 0.3d;
+		double decayFactor = 0.1d;
+		long maxNumOfIterations = 1;
 		int[] numOfNodes = { 784, 50, 50, 2 };
 		double[] fixedBias = { 0.5d, 0.8d, 0.5d };
 
@@ -103,9 +107,9 @@ public class NeuralNetworkFLTest extends TestCase {
 		NeuralNetwork nn = new NeuralNetworkFL(numOfNodes, inputSamples, outputSamples, maxNumOfIterations,
 				increaseFactor, decayFactor, fixedBias);
 
-		// nn.trainNetwork();
+ 		nn.trainNetwork();
 
-		// NeuralNetworkIO.saveNeuralNetwork(nn, "fl.nn");
+//		NeuralNetworkIO.saveNeuralNetwork(nn, PATH);
 	}
 
 	private double[][] assignOutputs(int rows, int cols, int index) {
@@ -123,16 +127,20 @@ public class NeuralNetworkFLTest extends TestCase {
 	}
 
 	public void testTestNeuralNetwork() {
-		NeuralNetworkIO.PATH = "fl.nn";
-		if (NeuralNetworkIO.PATH != "fl.nn") {
+		
+		if (!new File(PATH).exists()){
 			return;
 		}
 
-		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork();
+		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork(PATH);
 
 		double[][] testSamples = Utils.formatImagesWithSameLabelForNeuralNetwork(2, "test");
 		double[][] testOutputs = nn.testNetwork(testSamples);
 
+		printTestOutputs(testOutputs);
+	}
+
+	private void printTestOutputs(double[][] testOutputs) {
 		StringBuilder sb = new StringBuilder();
 
 		// only print out the first 100 data
@@ -149,10 +157,12 @@ public class NeuralNetworkFLTest extends TestCase {
 	}
 
 	public void testPrintLayers() {
-		NeuralNetworkIO.PATH = "fl.nn";
-		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork();
+		if (!new File(PATH).exists()){
+			return;
+		}
+		NeuralNetwork nn = NeuralNetworkIO.loadNeuralNetwork(PATH);
 		for (int i = 2; i < 4; i++) {
-			nn.printLayer(i);
+//			nn.printLayer(i);
 		}
 	}
 

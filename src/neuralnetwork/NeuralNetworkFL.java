@@ -1,12 +1,16 @@
 package neuralnetwork;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
+import formatdata.FileIO;
 import loggerutils.LoggerUtils;
 
 public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 
 	private static final long serialVersionUID = -6024997329847175600L;
+
+	public static final String PATH = "./result/easyfl.txt";
 
 	private double increaseFactor;
 	private double decayFactor;
@@ -20,6 +24,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 	private int currSampleIndex;
 
 	private LayerFL[] layers;
+	private StringBuilder sb;
 
 	public NeuralNetworkFL(int[] numOfNodes, double[][] inputSamples, double[][] outputSamples, long maxNumOfIterations,
 			double increaseFactor, double decayFactor, double[] fixedBias) {
@@ -66,7 +71,8 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 		}
 		setIntegerWeightsOfInputToFirstHiddenLayer();
 
-		// LoggerUtils.createLogger();
+//		LoggerUtils.createLogger();
+		sb = new StringBuilder();
 	}
 
 	@Override
@@ -82,16 +88,17 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 				feedForward();
 				updateWeights();
 				// output the last five changes in weights
-				// if (currSampleIndex >= (numOfInputSet - 5)){
-				// calculateWeightsError();
-				// }
+//				 if (currSampleIndex >= (numOfInputSet - 5)){
+//				 calculateWeightsError();
+//				 }
 			}
-			// calculateWeightsErrorBetweenDiffIteration(lastTime);
+			calculateWeightsErrorBetweenDiffIteration(lastTime);
 			currIteration++;
 			System.out.println("Current Iteration: " + currIteration);
 		} while (currIteration < maxNumOfIterations);
 		// printLayer(3);
-		System.out.println("here");
+		FileIO.writeToFile(sb.toString(), PATH);
+		
 	}
 
 	private LayerFL[] cloneLayers() {
@@ -112,6 +119,8 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 			}
 		}
 		System.out.println("Weight Error between two iterations is: " + error);
+		sb.append(error);
+		sb.append("\n");
 	}
 
 	private void calculateWeightsError() {
@@ -141,8 +150,8 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 					double increase = 0d;
 					// only when last time the corresponding node is active will
 					// pass its bias to this one
-					if (layers[i - 1].nodes[j].lastTime != null) {
-						if (layers[i - 1].nodes[j].lastTime.active) {
+					if (layers[i - 1].nodes[k].lastTime != null) {
+						if (layers[i - 1].nodes[k].lastTime.active) {
 							increase = layers[i - 1].nodes[k].output * increaseFactor;
 						}
 					}
@@ -162,6 +171,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 		layers[1].inputs = layers[0].inputs;
 		for (int i = 1; i < layers.length; i++) {
 			layers[i].feedForward();
+			test(i, 2, 1);
 			if (i != layers.length - 1) {
 				layers[i + 1].inputs = layers[i].getOutputs();
 			}
@@ -203,11 +213,10 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 
 		layers[1].inputs = inputs;
 		for (int i = 1; i < numOfLayers; i++) {
-			if (i != numOfLayers - 1){
+			if (i != numOfLayers - 1) {
 				layers[i].feedForward();
 				layers[i + 1].inputs = layers[i].getOutputs();
-			}
-			else
+			} else
 				// the last layer shouldn't limit sum with step function
 				layers[i].feedForward(true);
 		}
@@ -215,4 +224,67 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 		return layers[numOfLayers - 1].getOutputs();
 	}
 
+	private void test(int layerIndex, int onlyShowedLayer) {
+		if (layerIndex != onlyShowedLayer)
+			return;
+		StringBuilder sb = new StringBuilder();
+		sb.append("Layer " + layerIndex);
+		sb.append("[Weighted Sum: ");
+		int length = 20;
+		if (layers[layerIndex].nodes.length < length)
+			length = layers[layerIndex].nodes.length;
+		for (int i = 0; i < length; i++) {
+			if (layerIndex == 2) {
+				String s = String.format("%.2f", layers[layerIndex].nodes[i].temp);
+				sb.append(s);
+			} else {
+				sb.append((int) layers[layerIndex].nodes[i].output);
+			}
+			sb.append(" ");
+		}
+		sb.append("]");
+		System.out.println(sb.toString());
+	}
+
+	private void test(int layerIndex, int onlyShowedLayer, int weightIndex) {
+		if (layerIndex != onlyShowedLayer)
+			return;
+		StringBuilder sb = new StringBuilder();
+		sb.append("Layer " + layerIndex);
+		sb.append(", Neutron " + weightIndex + ": [");
+		int length = 20;
+		if (layers[layerIndex].nodes.length < length)
+			length = layers[layerIndex].nodes.length;
+		for (int i = 0; i < length; i++) {
+			String s = String.format("%.2f", layers[layerIndex].nodes[i].weights[weightIndex]);
+			sb.append(s);
+			sb.append(" ");
+		}
+		sb.append("]");
+		System.out.println(sb.toString());
+	}
+
+	private void test(int layerIndex, int onlyShowedLayer, boolean allWeight) {
+		if (layerIndex != onlyShowedLayer)
+			return;
+		StringBuilder sb = new StringBuilder();
+		sb.append("Layer " + layerIndex);
+		sb.append("[Weight all nonzero:");
+		int length = 20;
+		if (layers[layerIndex].nodes.length < length)
+			length = layers[layerIndex].nodes.length;
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < layers[layerIndex].nodes[i].weights.length; j++) {
+				if (layers[layerIndex].nodes[i].weights[j] != 0.0d) {
+					// String s =
+					// String.valueOf(layers[layerIndex].nodes[i].weights[j]);
+					String s = String.format("%.2f", layers[layerIndex].nodes[i].weights[j]);
+					sb.append(s);
+					sb.append(" ");
+				}
+			}
+		}
+		sb.append("]");
+		System.out.println(sb.toString());
+	}
 }

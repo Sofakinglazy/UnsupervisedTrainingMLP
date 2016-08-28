@@ -2,6 +2,7 @@ package neuralnetwork;
 
 import java.io.Serializable;
 
+import formatdata.FileIO;
 import loggerutils.LoggerUtils;
 
 public class NeuralNetworkBP implements NeuralNetwork, Serializable{
@@ -21,6 +22,8 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 	private double momentum;// user-defined
 
 	public Layer[] layers;
+	public static String PATH = "./result/";
+	private StringBuilder sb;
 	
 	public NeuralNetworkBP(
 			int[] numOfNodes,
@@ -59,6 +62,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 		}
 		
 //		LoggerUtils.createLogger();
+		sb = new StringBuilder();
 	}
 	
 	public void feedForward(){
@@ -128,6 +132,8 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 		}
 		
 		System.out.println("Current Overal Error is: " + overalError);
+		sb.append(overalError);
+		sb.append("\n");
 	}
 	
 	public void trainNetwork(){
@@ -149,7 +155,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 			currIteration++;
 			calculateOveralError();
 		} while ((overalError > minError) && (currIteration < maxNumOfIterations));
-		
+		FileIO.writeToFile(sb.toString(), PATH);
 	}
 
 	@SuppressWarnings("unused")

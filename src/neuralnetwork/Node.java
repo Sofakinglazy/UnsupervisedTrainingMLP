@@ -15,6 +15,8 @@ public class Node implements Serializable {
 
 	public boolean active;
 	public Node lastTime;
+	
+	public double temp;
 
 	public Node(int numOfInputs) {
 		weights = new double[numOfInputs];
@@ -35,6 +37,8 @@ public class Node implements Serializable {
 		bias = node.bias;
 		biasDiff = node.biasDiff;
 		error = node.error;
+		temp = node.temp;
+		active = node.active;
 		weights = new double[node.weights.length];
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = node.weights[i];

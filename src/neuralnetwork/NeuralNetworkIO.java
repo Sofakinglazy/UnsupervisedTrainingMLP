@@ -3,12 +3,12 @@ package neuralnetwork;
 import java.io.*;
 
 public class NeuralNetworkIO {
-	public static String PATH = "";
+	private static String PATH = "";
 	
-	public static FileOutputStream fos = null;
-	public static FileInputStream fis = null;
-	public static ObjectOutputStream oos = null;
-	public static ObjectInputStream ois = null;
+	private static FileOutputStream fos = null;
+	private static FileInputStream fis = null;
+	private static ObjectOutputStream oos = null;
+	private static ObjectInputStream ois = null;
 	
 	public static void saveNeuralNetwork(NeuralNetwork nn, String path){
 		PATH = path;
@@ -16,6 +16,7 @@ public class NeuralNetworkIO {
 			fos = new FileOutputStream(PATH);
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(nn);
+			System.out.println("Successfully save the network!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -30,12 +31,13 @@ public class NeuralNetworkIO {
 		}
 	}
 	
-	public static NeuralNetwork loadNeuralNetwork(){
+	public static NeuralNetwork loadNeuralNetwork(String path){
 		NeuralNetwork nn = null;
 		try {
-			fis = new FileInputStream(PATH);
+			fis = new FileInputStream(path);
 			ois = new ObjectInputStream(fis);
 			nn = (NeuralNetwork) ois.readObject();
+			System.out.println("Successfully load the network!");
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -50,6 +52,10 @@ public class NeuralNetworkIO {
 		}
 		
 		return nn;
+	}
+	
+	public static NeuralNetwork loadNeuralNetwork(){
+		return loadNeuralNetwork(PATH);
 	}
 	
 }
