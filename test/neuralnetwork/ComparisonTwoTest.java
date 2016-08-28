@@ -13,7 +13,7 @@ public class ComparisonTwoTest extends TestCase {
 		double momentum = 0d;
 		int[] numOfNodes = {784, 100, 100, 10};
 
-		NeuralNetworkBP.PATH += String.format("readDatabp(%.1fl%.1fm).txt", learningRate, momentum);
+		NeuralNetworkBP.PATH += String.format("readDatabp(%.1fl%.1fm%di).txt", learningRate, momentum, maxNumOfIterations);
 				
 		// Real data
 		double[][] inputs =  Utils.formatImagesForNeuralNetwork(); // 0 -> inputs 
@@ -23,12 +23,19 @@ public class ComparisonTwoTest extends TestCase {
 				maxNumOfIterations);
 
 		nn.trainNetwork();
+		
+		NeuralNetworkIO.saveNeuralNetwork(nn, "./network/bp(train)0.5l0.0m1000i.nn");
+//		nn = NeuralNetworkIO.loadNeuralNetwork("./network/bp(train)0.5l0.0m100i.nn");
+//
+//		inputs = Utils.formatImagesForNeuralNetwork("test");
+//		outputs = Utils.formatLabelsForNeuralNetwork("test");
+		double[][] actualOutputs = nn.testNetwork(inputs);
 
-		double[][] testOutputs = nn.testNetwork(inputs);
+		int correct = verify(actualOutputs, outputs);
+		
+		System.out.println(correct);
 
-		int correct = verify(testOutputs, outputs);
-
-		double rate = correct / testOutputs.length * 100;
+		double rate = correct / (double) actualOutputs.length * 100;
 
 		System.out.printf("The correct rate for BP: %.2f%% \n", rate);
 		FileIO.writeToFile(String.format("The correct rate for BP: %.2f%% \n", rate), NeuralNetworkBP.PATH, true);
@@ -47,6 +54,11 @@ public class ComparisonTwoTest extends TestCase {
 				return correct;
 			}
 		}
+		
+		//find the first one and consider it as the the current class
+//		for (int i = 0; i < testOutputs.length; i++){
+//			
+//		}
 
 		boolean wrong = false;
 		for (int i = 0; i < testOutputs.length; i++) {

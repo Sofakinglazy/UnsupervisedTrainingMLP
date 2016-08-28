@@ -8,32 +8,34 @@ import junit.framework.TestCase;
 
 public class ComparisonOneTest extends TestCase {
 
-	public void ComparisonOneForBP() {
+	public void testComparisonOneForBP() {
 		double learningRate = 0.5d;
 		long maxNumOfIterations = 10000;
 		double minError = 1E-4d;
-		double momentum = 0d;
+		double momentum = 0.5d;
 		int[] numOfNodes = { 10, 7, 1 };
 
-		NeuralNetworkBP.PATH += String.format("easybp(%.1fl%.1fm).txt", learningRate, momentum);
+		for (learningRate = 0.3; learningRate < 10; learningRate += 0.1) {
+			NeuralNetworkBP.PATH += String.format("easybp(%.1fl%.1fm).txt", learningRate, momentum);
 
-		double[][] inputs = assignInput();
-		double[][] outputs = assignOutput();
+			double[][] inputs = assignInput();
+			double[][] outputs = assignOutput();
 
-		NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputs, outputs, learningRate, momentum, minError,
-				maxNumOfIterations);
+			NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputs, outputs, learningRate, momentum, minError,
+					maxNumOfIterations);
 
-		nn.trainNetwork();
+			nn.trainNetwork();
 
-		double[][] testOutputs = nn.testNetwork(inputs);
+			double[][] testOutputs = nn.testNetwork(inputs);
 
-		int correct = verify(testOutputs, outputs);
+			int correct = verify(testOutputs, outputs);
 
-		double rate = correct / (double) testOutputs.length * 100;
+			double rate = correct / (double) testOutputs.length * 100;
 
-		System.out.printf("The correct rate for BP: %.2f%% \n", rate);
-		FileIO.writeToFile(String.format("The correct rate for BP: %.2f%% \n", rate), NeuralNetworkBP.PATH, true);
-
+			System.out.printf("The correct rate for BP: %.2f%% \n", rate);
+			FileIO.writeToFile(String.format("The correct rate for BP: %.2f%% \n", rate), NeuralNetworkBP.PATH, true);
+			NeuralNetworkBP.PATH = "./result/LearningRateBPM0.5/";
+		}
 	}
 
 	public void ComparisonOneForFL() {

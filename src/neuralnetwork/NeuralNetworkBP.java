@@ -22,7 +22,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 	private double momentum;// user-defined
 
 	public Layer[] layers;
-	public static String PATH = "./result/";
+	public static String PATH = "./result/LearningRateBPM0.5/";
 	private StringBuilder sb;
 	
 	public NeuralNetworkBP(
