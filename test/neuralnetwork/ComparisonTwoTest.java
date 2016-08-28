@@ -16,8 +16,8 @@ public class ComparisonTwoTest extends TestCase {
 		NeuralNetworkBP.PATH += String.format("readDatabp(%.1fl%.1fm%di).txt", learningRate, momentum, maxNumOfIterations);
 				
 		// Real data
-		double[][] inputs =  Utils.formatImagesForNeuralNetwork(); // 0 -> inputs 
-		double[][] outputs = Utils.formatLabelsForNeuralNetwork(); // 1 -> outputs 
+		double[][] inputs =  Utils.formatImagesForNeuralNetwork("test"); // 0 -> inputs 
+		double[][] outputs = Utils.formatLabelsForNeuralNetwork("test"); // 1 -> outputs 
 
 		NeuralNetwork nn = new NeuralNetworkBP(numOfNodes, inputs, outputs, learningRate, momentum, minError,
 				maxNumOfIterations);

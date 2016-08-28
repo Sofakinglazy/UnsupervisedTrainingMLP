@@ -1,6 +1,7 @@
 package neuralnetwork;
 
 import java.io.Serializable;
+import java.util.Scanner;
 
 import formatdata.FileIO;
 import loggerutils.LoggerUtils;
@@ -24,6 +25,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 	public Layer[] layers;
 	public static String PATH = "./result/LearningRateBPM0.5/";
 	private StringBuilder sb;
+	private boolean stopTraining;
 	
 	public NeuralNetworkBP(
 			int[] numOfNodes,
@@ -63,6 +65,16 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 		
 //		LoggerUtils.createLogger();
 		sb = new StringBuilder();
+		stopTraining = false;
+		new Thread(new Runnable() {
+			public void run() {
+				Scanner sc = new Scanner(System.in);
+				String c = sc.nextLine();
+				if (c.equals("c")){
+					stopTraining = true;
+				}
+			}
+		}).start();
 	}
 	
 	public void feedForward(){
@@ -150,6 +162,10 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 					actualOutput[currInputIndex][i] = layers[numOfLayers-1].nodes[i].output;
 				}
 				updateWeights();
+			}
+			if (stopTraining){
+				System.out.println("user stops training!");
+				break;
 			}
 //			test(); 
 			currIteration++;
