@@ -10,7 +10,7 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 
 	private static final long serialVersionUID = -6024997329847175600L;
 
-	public static final String PATH = "./result/easyfl.txt";
+	public static String PATH = "./result/realDatafl.txt";
 
 	private double increaseFactor;
 	private double decayFactor;
@@ -227,49 +227,55 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 	private void test(int layerIndex, int onlyShowedLayer) {
 		if (layerIndex != onlyShowedLayer)
 			return;
-		StringBuilder sb = new StringBuilder();
-		sb.append("Layer " + layerIndex);
-		sb.append("[Weighted Sum: ");
+		StringBuilder sb0 = new StringBuilder();
+		sb0.append("Layer " + layerIndex);
+		sb0.append("[Weighted Sum: ");
 		int length = 20;
 		if (layers[layerIndex].nodes.length < length)
 			length = layers[layerIndex].nodes.length;
 		for (int i = 0; i < length; i++) {
 			if (layerIndex == 2) {
 				String s = String.format("%.2f", layers[layerIndex].nodes[i].temp);
-				sb.append(s);
+				sb0.append(s);
 			} else {
-				sb.append((int) layers[layerIndex].nodes[i].output);
+				sb0.append((int) layers[layerIndex].nodes[i].output);
 			}
-			sb.append(" ");
+			sb0.append(" ");
 		}
-		sb.append("]");
-		System.out.println(sb.toString());
+		sb0.append("]");
+		System.out.println(sb0.toString());
 	}
 
 	private void test(int layerIndex, int onlyShowedLayer, int weightIndex) {
 		if (layerIndex != onlyShowedLayer)
 			return;
-		StringBuilder sb = new StringBuilder();
-		sb.append("Layer " + layerIndex);
-		sb.append(", Neutron " + weightIndex + ": [");
+		StringBuilder sb0 = new StringBuilder();
+//		sb0.append("Layer " + layerIndex);
+//		sb0.append(", Neutron " + weightIndex);
+		sb0.append(": ");
+		// only showed length 
 		int length = 20;
 		if (layers[layerIndex].nodes.length < length)
 			length = layers[layerIndex].nodes.length;
 		for (int i = 0; i < length; i++) {
 			String s = String.format("%.2f", layers[layerIndex].nodes[i].weights[weightIndex]);
-			sb.append(s);
-			sb.append(" ");
+			sb0.append(s);
+			sb0.append(" ");
+			
 		}
-		sb.append("]");
-		System.out.println(sb.toString());
+		sb0.append("\n");
+//		System.out.print(sb0.toString());
+		
+		String path = String.format("./result/realData(%d,%d,%d).txt", layerIndex, onlyShowedLayer, weightIndex);
+		FileIO.writeToFile(sb0.toString(), path, true);
 	}
 
 	private void test(int layerIndex, int onlyShowedLayer, boolean allWeight) {
 		if (layerIndex != onlyShowedLayer)
 			return;
-		StringBuilder sb = new StringBuilder();
-		sb.append("Layer " + layerIndex);
-		sb.append("[Weight all nonzero:");
+		StringBuilder sb0 = new StringBuilder();
+		sb0.append("Layer " + layerIndex);
+		sb0.append("[Weight all nonzero:");
 		int length = 20;
 		if (layers[layerIndex].nodes.length < length)
 			length = layers[layerIndex].nodes.length;
@@ -279,12 +285,12 @@ public class NeuralNetworkFL implements NeuralNetwork, Serializable {
 					// String s =
 					// String.valueOf(layers[layerIndex].nodes[i].weights[j]);
 					String s = String.format("%.2f", layers[layerIndex].nodes[i].weights[j]);
-					sb.append(s);
-					sb.append(" ");
+					sb0.append(s);
+					sb0.append(" ");
 				}
 			}
 		}
-		sb.append("]");
-		System.out.println(sb.toString());
+		sb0.append("]");
+		System.out.println(sb0.toString());
 	}
 }

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class ComparisonOneTest extends TestCase {
 
-	public void testComparisonOneForBP() {
+	public void ComparisonOneForBP() {
 		double learningRate = 0.5d;
 		long maxNumOfIterations = 10000;
 		double minError = 1E-4d;
@@ -38,12 +38,12 @@ public class ComparisonOneTest extends TestCase {
 		}
 	}
 
-	public void ComparisonOneForFL() {
-		long maxNumOfIterations = 10000;
+	public void testComparisonOneForFL() {
+		long maxNumOfIterations = 1000;
 		int[] numOfNodes = { 10, 7, 7, 1 };
 		double increaseFactor = 0.5d;
 		double decayFactor = 0.1d;
-		double[] fixedBias = { 0.5d, 0.5d, 0.5d };
+		double[] fixedBias = { 0.5d, 0.5d, 0d };
 
 		double[][] inputs = assignInput();
 		double[][] outputs = assignOutput();

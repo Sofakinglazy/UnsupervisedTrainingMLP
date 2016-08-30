@@ -171,7 +171,7 @@ public class NeuralNetworkBP implements NeuralNetwork, Serializable{
 			currIteration++;
 			calculateOveralError();
 		} while ((overalError > minError) && (currIteration < maxNumOfIterations));
-		FileIO.writeToFile(sb.toString(), PATH);
+//		FileIO.writeToFile(sb.toString(), PATH);
 	}
 
 	@SuppressWarnings("unused")

@@ -10,40 +10,40 @@ import neuralnetwork.NeuralNetworkTest;
 public class Main {
 
 	public static void main(String[] args) {
-		ImageViewer.currImage = 5;
+		ImageViewer.currImage = 6;
 		MainFrame mainFrame = new MainFrame();
 		
 		
 		// demo for BP network 
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Want to enter to demo of BP network? (Y/N)");
-		while (true){
-			if(sc.nextLine().equals("Y"))
-				break;
-		}
-		NeuralNetwork nn = demoBpNetwork();
-		
-		System.out.println("Want to save the network? (Y/N)");
-		while (true){
-			if(sc.nextLine().equals("Y"))
-				break;
-		}
-		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
-		
-		System.out.println("Want to load the network? (Y/N)");
-		while (true){
-			if(sc.nextLine().equals("Y"))
-				break;
-		}
-		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork("bp.nn");
-		
-		System.out.println("Want to test the network? (Y/N)");
-		while (true){
-			if(sc.nextLine().equals("Y"))
-				break;
-		}
-		double[][] outputs = nn1.testNetwork(NeuralNetworkTest.assignInputSamples());
-		printOutputs(outputs);
+//		Scanner sc = new Scanner(System.in);
+//		System.out.println("Want to enter to demo of BP network? (Y/N)");
+//		while (true){
+//			if(sc.nextLine().equals("Y"))
+//				break;
+//		}
+//		NeuralNetwork nn = demoBpNetwork();
+//		
+//		System.out.println("Want to save the network? (Y/N)");
+//		while (true){
+//			if(sc.nextLine().equals("Y"))
+//				break;
+//		}
+//		NeuralNetworkIO.saveNeuralNetwork(nn, "bp.nn");
+//		
+//		System.out.println("Want to load the network? (Y/N)");
+//		while (true){
+//			if(sc.nextLine().equals("Y"))
+//				break;
+//		}
+//		NeuralNetwork nn1 = NeuralNetworkIO.loadNeuralNetwork("bp.nn");
+//		
+//		System.out.println("Want to test the network? (Y/N)");
+//		while (true){
+//			if(sc.nextLine().equals("Y"))
+//				break;
+//		}
+//		double[][] outputs = nn1.testNetwork(NeuralNetworkTest.assignInputSamples());
+//		printOutputs(outputs);
 	}
 
 	private static void printOutputs(double[][] outputs) {
